@@ -1,6 +1,6 @@
 package org.example.foodapp;
 import Classes.User;
-import DaoClasses.UserDao;
+import DaoClasses.UserDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,7 +22,7 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
         // Create an instance of UserDAO
-        UserDao userDAO = new UserDao();
+        UserDAO userDAO = new UserDAO();
 
         // Fetch all users
         List<User> users = userDAO.getAllUsers();

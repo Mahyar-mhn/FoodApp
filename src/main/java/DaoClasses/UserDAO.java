@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDao {
+public class UserDAO {
     // Fetch all users from the database
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
