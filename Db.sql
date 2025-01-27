@@ -209,3 +209,6 @@ INSERT INTO ShoppingCart (UserId, ItemId, Date, Count) VALUES
 (5, 5, '2025-01-04 14:00:00', 5);
 
 select * from user;
+
+select * from Address;
+
