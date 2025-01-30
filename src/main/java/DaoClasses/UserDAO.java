@@ -10,29 +10,30 @@ import java.util.List;
 public class UserDAO {
 
     /**
-     * Fetch all users from the database.
+     * Fetch all users from the database, including Role and IsDeleted status.
      *
-     * @return A list of User objects without passwords.
+     * @return A list of User objects without passwords for security.
      */
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        String query = "SELECT UserId, Name, Phone FROM User";
+        String storedProcedure = "{CALL GetAllUsers()}";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
+             CallableStatement callableStatement = connection.prepareCall(storedProcedure);
+             ResultSet resultSet = callableStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 // Create a User object from each row in the result set
-                User user = new User(
+                users.add(new User(
                         resultSet.getInt("UserId"),
                         resultSet.getString("Name"),
-                        resultSet.getString("Phone")
-                );
-                users.add(user); // Add the User to the list
+                        resultSet.getString("Phone"),
+                        resultSet.getString("Role"),
+                        resultSet.getBoolean("IsDeleted")
+                ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error fetching all users: " + e.getMessage());
         }
 
         return users;
@@ -41,37 +42,45 @@ public class UserDAO {
     /**
      * Verifies the user's login credentials using the UserLogin stored procedure.
      *
-     * @param userName     The username entered by the user.
-     * @param userPassword The password entered by the user (raw, before hashing).
+     * @param username The username entered by the user.
+     * @param password The password entered by the user (raw, before hashing).
      * @return A User object if the credentials are valid, otherwise null.
      */
-    public User loginUser(String userName, String userPassword) {
-        User user = null;
+    public User loginUser(String username, String password) {
+        String procedureCall = "{CALL UserLogin(?, ?)}";
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            // Call the stored procedure
-            String procedureCall = "{CALL UserLogin(?, ?)}";
-            CallableStatement callableStatement = connection.prepareCall(procedureCall);
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(procedureCall)) {
 
-            // Set input parameters
-            callableStatement.setString(1, userName);
-            callableStatement.setString(2, userPassword);
+            // Set input parameters for the stored procedure
+            callableStatement.setString(1, username.trim());
+            callableStatement.setString(2, password.trim());
 
-            // Execute the procedure and get the result
+            // Execute the stored procedure
             try (ResultSet resultSet = callableStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    // Create a User object with the retrieved data
-                    int userId = resultSet.getInt("UserId");
-                    String name = resultSet.getString("Name");
-                    user = new User(userId, name, null); // Password is not retrieved for security
+                    // Log the fetched role for debugging
+                    String role = resultSet.getString("Role");
+                    System.out.println("Fetched role: " + role);
+
+                    // Create a User object with the result set data
+                    return new User(
+                            resultSet.getInt("UserId"),
+                            resultSet.getString("Name"),
+                            null,  // Password is not fetched for security
+                            role,  // Correct role fetched from the result
+                            resultSet.getBoolean("IsDeleted")
+                    );
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error during user login: " + e.getMessage());
         }
 
-        return user; // Return the user object if valid, or null if invalid
+        return null; // Return null if no user is found
     }
+
+
     /**
      * Adds a new user to the database using the SignUpUser stored procedure.
      *
@@ -79,98 +88,114 @@ public class UserDAO {
      * @return true if the user was successfully added, false otherwise.
      */
     public boolean addUser(User user) {
-        String procedureCall = "{CALL SignUpUser(?, ?, ?)}";
+        String procedureCall = "{CALL SignUpUser(?, ?, ?, ?)}";
 
         try (Connection connection = DatabaseConnection.getConnection();
              CallableStatement callableStatement = connection.prepareCall(procedureCall)) {
 
-            // Set the input parameters for the stored procedure
-            callableStatement.setString(1, user.getName());
-            callableStatement.setString(2, user.getPhone());
-            callableStatement.setString(3, user.getPassword());
+            callableStatement.setString(1, user.getName().trim());
+            callableStatement.setString(2, user.getPhone().trim());
+            callableStatement.setString(3, user.getPassword().trim());
+            callableStatement.setString(4, user.getRole());
 
-            // Execute the stored procedure
             callableStatement.execute();
-            return true; // Return true if no exception occurs
+            return true;
 
         } catch (SQLException e) {
-            // Handle specific SQL exception for duplicate users
-            if (e.getSQLState().equals("45000")) {
-                System.err.println("Error: " + e.getMessage());
+            if ("45000".equals(e.getSQLState())) {
+                System.err.println("Duplicate user error: " + e.getMessage());
             } else {
-                e.printStackTrace();
+                System.err.println("Error adding user: " + e.getMessage());
             }
         }
 
-        return false; // Return false if an exception occurs
+        return false;
     }
-//
-//    /**
-//     * Updates an existing user's phone or password.
-//     *
-//     * @param userId       The ID of the user to update.
-//     * @param newPhone     The new phone number (optional, pass null to skip).
-//     * @param newPassword  The new password (optional, pass null to skip).
-//     * @return true if the update was successful, false otherwise.
-//     */
-//    public boolean updateUser(int userId, String newPhone, String newPassword) {
-//        StringBuilder query = new StringBuilder("UPDATE User SET ");
-//        boolean updatePhone = (newPhone != null && !newPhone.isEmpty());
-//        boolean updatePassword = (newPassword != null && !newPassword.isEmpty());
-//
-//        if (updatePhone) {
-//            query.append("Phone = ?");
-//        }
-//        if (updatePassword) {
-//            if (updatePhone) query.append(", ");
-//            query.append("Password = SHA2(?, 256)");
-//        }
-//        query.append(" WHERE UserId = ?");
-//
-//        try (Connection connection = DatabaseConnection.getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
-//
-//            int paramIndex = 1;
-//
-//            if (updatePhone) {
-//                preparedStatement.setString(paramIndex++, newPhone);
-//            }
-//            if (updatePassword) {
-//                preparedStatement.setString(paramIndex++, newPassword);
-//            }
-//            preparedStatement.setInt(paramIndex, userId);
-//
-//            int rowsAffected = preparedStatement.executeUpdate();
-//            return rowsAffected > 0;
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return false;
-//    }
-//
-//    /**
-//     * Deletes a user from the database.
-//     *
-//     * @param userId The ID of the user to delete.
-//     * @return true if the user was successfully deleted, false otherwise.
-//     */
-//    public boolean deleteUser(int userId) {
-//        String query = "DELETE FROM User WHERE UserId = ?";
-//
-//        try (Connection connection = DatabaseConnection.getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-//
-//            preparedStatement.setInt(1, userId);
-//
-//            int rowsAffected = preparedStatement.executeUpdate();
-//            return rowsAffected > 0;
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return false;
-//    }
+
+    /**
+     * Fetches a user by ID using the stored procedure `GetUserById`.
+     *
+     * @param userId The ID of the user to fetch.
+     * @return The User object or null if not found.
+     */
+    public User getUserById(int userId) {
+        String storedProcedure = "{CALL GetUserById(?)}";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(storedProcedure)) {
+
+            callableStatement.setInt(1, userId);
+
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new User(
+                            resultSet.getInt("UserId"),
+                            resultSet.getString("Name"),
+                            resultSet.getString("Phone")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching user by ID: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    /**
+     * Updates a user's details (Name, Phone, or Role) using the EditRecord stored procedure.
+     *
+     * @param userId     The ID of the user to update.
+     * @param columnName The column name to update (e.g., "Name", "Phone", "Role").
+     * @param newValue   The new value for the specified column.
+     * @return true if the update was successful, false otherwise.
+     */
+    public boolean updateUser(int userId, String columnName, String newValue) {
+        String storedProcedure = "{CALL EditRecord(?, ?, ?, ?, ?)}";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(storedProcedure)) {
+
+            callableStatement.setString(1, "User");
+            callableStatement.setString(2, columnName);
+            callableStatement.setString(3, newValue.trim());
+            callableStatement.setString(4, "UserId");
+            callableStatement.setInt(5, userId);
+
+            callableStatement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("Error updating user: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes a user by soft-deleting them using the `DeleteUser` stored procedure.
+     *
+     * @param userId The ID of the user to remove.
+     * @return true if the user was successfully removed, false otherwise.
+     */
+    public boolean removeUser(int userId) {
+        String storedProcedure = "{CALL DeleteUser(?)}";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(storedProcedure)) {
+
+            callableStatement.setInt(1, userId);
+
+            // Execute the stored procedure
+            callableStatement.execute();
+            System.out.println("User with ID " + userId + " has been soft-deleted.");
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("Error removing user: " + e.getMessage());
+        }
+
+        return false;
+    }
+
 }

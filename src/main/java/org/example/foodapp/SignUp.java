@@ -26,7 +26,7 @@ public class SignUp {
     @FXML
     private Button signup_button;
 
-    private UserDAO userDAO = new UserDAO(); // DAO for database operations
+    private final UserDAO userDAO = new UserDAO(); // DAO for database operations
 
     @FXML
     public void initialize() {
@@ -37,8 +37,8 @@ public class SignUp {
      * Handles the signup process.
      */
     private void handleSignup() {
-        String name = name_txtfield.getText();
-        String phone = phone_txtfield.getText();
+        String name = name_txtfield.getText().trim();
+        String phone = phone_txtfield.getText().trim();
         String password = password_txtfield.getText();
         String confirmPassword = confirm_password_txtfield.getText();
 
@@ -53,8 +53,17 @@ public class SignUp {
             return;
         }
 
+        if (phone.length() != 10 || !phone.matches("\\d+")) {
+            showAlert("Error", "Phone number must be 10 digits.");
+            return;
+        }
+
+        // Set default role and IsDeleted status for the new user
+        String role = "User"; // Default role
+        boolean isDeleted = false;
+
         // Create a new user object
-        User newUser = new User(0, name, phone, password);
+        User newUser = new User(0, name, phone, password, role, isDeleted);
 
         // Add the user to the database
         boolean success = userDAO.addUser(newUser);
@@ -65,7 +74,7 @@ public class SignUp {
             Stage stage = (Stage) signup_button.getScene().getWindow();
             SceneChanger.changeScene(stage, "Login.fxml", "Login Page");
         } else {
-            showAlert("Error", "Failed to register user. Please try again.");
+            showAlert("Error", "Failed to register user. Please try again. The username or phone number might already exist.");
         }
     }
 

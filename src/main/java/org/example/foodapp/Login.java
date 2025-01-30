@@ -22,26 +22,31 @@ public class Login {
     @FXML
     private TextField username_txtfield;
 
-    private UserDAO userDAO = new UserDAO(); // DAO instance for database operations
+    private final UserDAO userDAO = new UserDAO(); // DAO instance for database operations
 
     @FXML
     public void initialize() {
+        // Set up button actions
         login_submit_button.setOnAction(event -> handleLogin());
         signup_link_button.setOnAction(event -> navigateToSignup());
-
     }
 
+    /**
+     * Navigates to the signup page.
+     */
     @FXML
     private void navigateToSignup() {
         Stage stage = (Stage) signup_link_button.getScene().getWindow();
         SceneChanger.changeScene(stage, "Signup.fxml", "Signup Page");
     }
 
-
+    /**
+     * Handles the login process by validating credentials and navigating based on user role.
+     */
     @FXML
     private void handleLogin() {
-        String username = username_txtfield.getText();
-        String password = pass_textfield.getText();
+        String username = username_txtfield.getText().trim();
+        String password = pass_textfield.getText().trim();
 
         // Validate input fields
         if (username.isEmpty() || password.isEmpty()) {
@@ -50,35 +55,53 @@ public class Login {
         }
 
         try {
-            // Authenticate the user using the UserDAO
+            // Attempt login using UserDAO
             User user = userDAO.loginUser(username, password);
 
             if (user == null) {
                 // Invalid credentials
                 showAlert("Login Failed", "Invalid username or password.");
+            } else if (user.isDeleted()) {
+                // User account is deactivated
+                showAlert("Login Failed", "Your account has been deactivated. Please contact support.");
             } else {
-                // Successful login
-                showAlert("Login Successful", "Welcome, " + user.getName() + "!");
-
-                // Get the current stage and navigate to the appropriate page
-                Stage stage = (Stage) login_submit_button.getScene().getWindow();
-                navigateToHomePage(user, stage);
+                // Successful login - Navigate based on role
+                navigateByRole(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Error", "An error occurred during login.");
+            showAlert("Error", "An error occurred during login. Please try again later.");
         }
     }
 
     /**
-     * Navigates to the appropriate home page based on the user's role or data.
+     * Navigates the user to the appropriate page based on their role.
      *
-     * @param user  The authenticated user.
-     * @param stage The current stage for scene transition.
+     * @param user The authenticated user object.
      */
-    private void navigateToHomePage(User user, Stage stage) {
-        // Example: Always navigate to the Admin page (can be extended for roles)
-        SceneChanger.changeScene(stage, "CustomerHomePage.fxml", "Admin Page");
+    private void navigateByRole(User user) {
+        String role = user.getRole();
+
+        // Debugging: Log role to the console
+        System.out.println("Logged-in user's role: " + role);
+
+        Stage stage = (Stage) login_submit_button.getScene().getWindow();
+
+        try {
+            if ("Admin".equalsIgnoreCase(role)) {
+                showAlert("Login Successful", "Welcome Admin: " + user.getName() + "!");
+                SceneChanger.changeScene(stage, "AdminHomePage.fxml", "Admin Page");
+            } else if ("Manager".equalsIgnoreCase(role)) {
+                showAlert("Login Successful", "Welcome Manager: " + user.getName() + "!");
+                SceneChanger.changeScene(stage, "RestaurantManagerHomePage.fxml", "Manager Page");
+            } else {
+                showAlert("Login Successful", "Welcome, " + user.getName() + "!");
+                SceneChanger.changeScene(stage, "CustomerHomePage.fxml", "Customer Page");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Navigation Error", "Failed to navigate to the appropriate page.");
+        }
     }
 
     /**

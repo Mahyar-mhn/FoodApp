@@ -1,37 +1,50 @@
 package Classes;
 
 public class User {
-    private int userId;    // UserId in the database
-    private String name;   // Name in the database
-    private String phone;  // Phone in the database
-    private String password; // Password in the database (hashed)
+    private int userId;       // UserId in the database
+    private String name;      // Name in the database
+    private String phone;     // Phone in the database
+    private String password;  // Password in the database (hashed)
+    private String role;      // Role in the database (e.g., User, Admin, Manager)
+    private boolean isDeleted; // IsDeleted in the database (soft delete status)
 
-    /**
-     * Constructor for User without password.
-     *
-     * @param userId The user ID.
-     * @param name   The user's name.
-     * @param phone  The user's phone.
-     */
-    public User(int userId, String name, String phone) {
-        this.userId = userId;
-        this.name = name;
-        this.phone = phone;
-    }
-
-    /**
-     * Constructor for User with password.
-     *
-     * @param userId   The user ID.
-     * @param name     The user's name.
-     * @param phone    The user's phone.
-     * @param password The user's password (hashed).
-     */
-    public User(int userId, String name, String phone, String password) {
+    // Constructor: Full fields
+    public User(int userId, String name, String phone, String password, String role, boolean isDeleted) {
         this.userId = userId;
         this.name = name;
         this.phone = phone;
         this.password = password;
+        this.role = role;
+        this.isDeleted = isDeleted;
+    }
+
+    // Constructor: Without password (for fetching user data without sensitive info)
+    public User(int userId, String name, String phone, String role, boolean isDeleted) {
+        this.userId = userId;
+        this.name = name;
+        this.phone = phone;
+        this.role = role;
+        this.isDeleted = isDeleted;
+    }
+
+    // Constructor: Minimal fields (e.g., for simplified queries)
+    public User(int userId, String name, String phone, boolean isDeleted) {
+        this.userId = userId;
+        this.name = name;
+        this.phone = phone;
+        this.role = "User"; // Default role when not provided
+        this.isDeleted = isDeleted;
+    }
+
+    // Default Constructor
+    public User() {
+        // Empty constructor for initialization flexibility
+    }
+
+    public User(int userId, String name, String phone) {
+        this.userId = userId;
+        this.name = name;
+        this.phone = phone;
     }
 
     // Getters and Setters
@@ -67,12 +80,30 @@ public class User {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
+                ", role='" + role + '\'' +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }
