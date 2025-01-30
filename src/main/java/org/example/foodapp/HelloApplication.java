@@ -18,7 +18,7 @@ public class HelloApplication extends Application {
         primaryStage = stage;
 
         // Load the initial scene
-        changeScene(stage,"CustomerHomePage.fxml", "Admin Page");
+        changeScene(stage,"Login.fxml", "Admin Page");
     }
 
     public static void main(String[] args) {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Button?>
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.SignUp">
+    <children>
+        <Label layoutX="50.0" layoutY="50.0" text="Name:" />
+        <TextField fx:id="name_txtfield" layoutX="150.0" layoutY="50.0" prefWidth="200.0" />
+
+        <Label layoutX="50.0" layoutY="100.0" text="Phone:" />
+        <TextField fx:id="phone_txtfield" layoutX="150.0" layoutY="100.0" prefWidth="200.0" />
+
+        <Label layoutX="50.0" layoutY="150.0" text="Password:" />
+        <PasswordField fx:id="password_txtfield" layoutX="150.0" layoutY="150.0" prefWidth="200.0" />
+
+        <Label layoutX="50.0" layoutY="200.0" text="Confirm Password:" />
+        <PasswordField fx:id="confirm_password_txtfield" layoutX="150.0" layoutY="200.0" prefWidth="200.0" />
+
+        <Button fx:id="signup_button" layoutX="150.0" layoutY="250.0" text="Sign Up" prefWidth="100.0" />
+    </children>
+</AnchorPane>
