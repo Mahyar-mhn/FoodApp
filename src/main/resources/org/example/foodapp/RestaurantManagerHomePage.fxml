@@ -7,72 +7,79 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.RestaurantManagerHomePage">
-   <children>
-      <AnchorPane layoutX="325.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Separator layoutX="350.0" layoutY="130.0" prefWidth="800.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0" />
-            <AnchorPane layoutX="342.0" layoutY="115.0" prefHeight="100.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="394.0" layoutY="25.0" text="WELCOME" AnchorPane.topAnchor="10.0">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="manager_name" alignment="CENTER" contentDisplay="CENTER" layoutX="390.0" layoutY="50.0" text="Manager name">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <TabPane layoutX="350.0" layoutY="255.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
-              <tabs>
-                <Tab text="Order">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <ScrollPane layoutX="10.0" layoutY="64.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="363.0" prefWidth="865.0" />
-                                </content>
-                              </ScrollPane>
-                              <Label layoutX="28.0" layoutY="25.0" text="What Would you eat today?!" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="15.0">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab text="Your Restaurants">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <ScrollPane layoutX="350.0" layoutY="66.0" prefHeight="200.0" prefWidth="880.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="255.0" prefWidth="864.0" />
-                                </content>
-                              </ScrollPane>
-                              <Label layoutX="35.0" layoutY="23.0" text="Your Restaurants Boss" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="15.0">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <Button layoutX="99.0" layoutY="373.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Add" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="100.0" />
-                              <Button layoutX="415.0" layoutY="375.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Delete" AnchorPane.bottomAnchor="70.33333333333337" />
-                              <Button layoutX="687.0" layoutY="347.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Edit" AnchorPane.bottomAnchor="70.0" AnchorPane.rightAnchor="100.0" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-         </children>
-      </AnchorPane>
-   </children>
+    <children>
+        <AnchorPane fx:id="main_pane_adminPage" layoutX="325.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Separator layoutX="350.0" layoutY="130.0" prefWidth="800.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0" />
+                <AnchorPane layoutX="342.0" layoutY="115.0" prefHeight="100.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="394.0" layoutY="25.0" text="WELCOME" AnchorPane.topAnchor="10.0">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="manager_name" alignment="CENTER" contentDisplay="CENTER" layoutX="390.0" layoutY="50.0" text="Manager Name">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <TabPane layoutX="350.0" layoutY="255.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                    <tabs>
+                        <Tab text="Order">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <ScrollPane layoutX="10.0" layoutY="64.0" prefHeight="400.0" prefWidth="850.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+                                            <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="577.0" prefWidth="865.0">
+                                                    <children>
+                                                        <VBox fx:id="vbox_scroll_pane_manager_homePage" layoutX="10.0" layoutY="10.0" prefHeight="155.0" prefWidth="820.0" />
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </ScrollPane>
+                                        <Label layoutX="28.0" layoutY="25.0" text="What would you eat today?!" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="15.0">
+                                            <font>
+                                                <Font size="24.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Your Restaurants">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <ScrollPane fx:id="remove_restaurant_scroll_pane" layoutX="10.0" layoutY="60.0" prefHeight="400.0" prefWidth="850.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+                                            <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="850.0">
+                                                    <children>
+                                                        <VBox fx:id="remove_restaurant_vbox" layoutX="10.0" layoutY="10.0" prefHeight="500.0" prefWidth="820.0" />
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </ScrollPane>
+                                        <Label layoutX="28.0" layoutY="25.0" text="Your Restaurants Boss" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="15.0">
+                                            <font>
+                                                <Font size="24.0" />
+                                            </font>
+                                        </Label>
+                                        <Button fx:id="add_restaurant_button" layoutX="100.0" layoutY="500.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Add" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="100.0" />
+                                        <Button fx:id="remove_restaurant_button" layoutX="250.0" layoutY="500.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Delete" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="250.0" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </children>
+        </AnchorPane>
+    </children>
 </AnchorPane>
