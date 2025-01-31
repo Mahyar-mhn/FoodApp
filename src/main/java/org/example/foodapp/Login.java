@@ -86,6 +86,7 @@ public class Login {
      */
     private void navigateByRole(User user) {
         String role = user.getRole();
+        int userId = user.getUserId();
 
         // Debugging: Log role to the console
         System.out.println("Logged-in user's role: " + role);
@@ -128,9 +129,9 @@ public class Login {
                 loader = new FXMLLoader(getClass().getResource("CustomerHomePage.fxml"));
                 AnchorPane customerPage = loader.load();
 
-                // Pass the user name to the CustomerHomePage controller
+                // Get the controller instance
                 CustomerHomePage customerController = loader.getController();
-                customerController.loadCustomerName(user.getName());
+                customerController.setCustomerData(userId, user.getName());
 
                 // Set the scene
                 Scene customerScene = new Scene(customerPage);

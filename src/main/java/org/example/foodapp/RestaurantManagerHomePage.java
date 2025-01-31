@@ -127,7 +127,7 @@ public class RestaurantManagerHomePage {
 
                 // Pass restaurant details to the controller
                 RestaurantPage controller = loader.getController();
-                controller.loadRestaurantPage(restaurant);
+                controller.loadRestaurantPage(restaurant, 1);
 
                 // Switch the main pane to the restaurant details pane
                 main_pane_managerPage.getChildren().clear();

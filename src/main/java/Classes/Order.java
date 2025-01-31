@@ -1,9 +1,13 @@
 package Classes;
 
+import java.util.List;
+
 public class Order {
     private int orderId;   // OrderId in the database
     private int addressId; // Foreign key to Address table
     private String status; // Status in the database
+    private List<OrderDetail> orderDetails;
+
 
     // Constructor
     public Order(int orderId, int addressId, String status) {
@@ -35,6 +39,13 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
     @Override

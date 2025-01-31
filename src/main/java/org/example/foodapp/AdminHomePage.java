@@ -300,7 +300,6 @@ public class AdminHomePage {
     private void loadSelectedRestaurantPage(int restaurantId) {
         try {
             // Fetch restaurant details from the database using the RestaurantDAO
-            RestaurantDAO restaurantDAO = new RestaurantDAO();
             Restaurant restaurant = restaurantDAO.getRestaurantById(restaurantId);
 
             if (restaurant != null) {
@@ -308,9 +307,12 @@ public class AdminHomePage {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("RestaurantPage.fxml"));
                 AnchorPane restaurantDetailsPane = loader.load();
 
-                // Pass restaurant details to the controller
+                // Pass restaurant details and user address ID to the controller
                 RestaurantPage controller = loader.getController();
-                controller.loadRestaurantPage(restaurant);
+
+                // Here, use the appropriate user address ID (replace '1' with a dynamic ID from the logged-in user)
+                int userAddressId = 1; // Example: replace with logged-in user's address ID
+                controller.loadRestaurantPage(restaurant, userAddressId);
 
                 // Switch the main pane to the restaurant details pane
                 main_pane_adminPage.getChildren().clear();
@@ -322,6 +324,7 @@ public class AdminHomePage {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Toggles between the Manage Restaurants view and the Home Page.
@@ -625,6 +628,7 @@ public class AdminHomePage {
         if (nameUpdated && cityUpdated && addressUpdated) {
             showAlert("Success", "Restaurant updated successfully.");
             loadRestaurantsIntoEditScrollPane();
+            loadRestaurantsIntoRemoveScrollPane();
         } else {
             showAlert("Error", "Failed to update restaurant.");
         }
