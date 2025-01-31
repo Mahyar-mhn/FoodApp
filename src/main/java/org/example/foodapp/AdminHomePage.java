@@ -1,7 +1,10 @@
 package org.example.foodapp;
 
+import Classes.OrderDetail;
 import Classes.Restaurant;
 import Classes.User;
+import DaoClasses.OrderDAO;
+import DaoClasses.OrderDetailDAO;
 import DaoClasses.RestaurantDAO;
 import DaoClasses.UserDAO;
 import javafx.collections.FXCollections;
@@ -10,10 +13,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AdminHomePage {
 
@@ -126,8 +136,13 @@ public class AdminHomePage {
     private int selectedRestaurantIdToRemove = -1; // For removal
 
 
+    private OrderDAO orderDAO = new OrderDAO();
+    private OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+
     private int adminId; // Admin ID for the logged-in user
 
+    @FXML
+    private VBox vbox_admin_orders;
 
     /**
      * Sets the customer name into the label.
@@ -150,12 +165,20 @@ public class AdminHomePage {
         // Set the admin name
         loadAdminName(adminName);
 
+        int addressId = getAdminDefaultAddressId();
+        if (addressId != -1) {
+            System.out.println("Manager's Default Address ID: " + addressId);
+        } else {
+            System.out.println("No default address found for the manager.");
+        }
         // Load profile pane and other data
         showProfilePane();
         populateRoleChoiceBox(edit_user_role_choicebox);
         populateRoleChoiceBox(add_user_role_choicebox);
         loadRestaurantsIntoEditScrollPane();
         loadRestaurantsIntoRemoveScrollPane();
+
+        loadAdminOrders();
 
         // Event handlers
         manage_restaurant_button.setOnAction(event -> toggleManageRestaurants());
@@ -291,6 +314,28 @@ public class AdminHomePage {
         }
     }
 
+    private int getAdminDefaultAddressId() {
+        String procedureCall = "{CALL GetDefaultAddressByUserId(?)}";
+        int addressId = -1; // Default value indicating no address found
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(procedureCall)) {
+
+            // Set the manager's ID as input
+            callableStatement.setInt(1, adminId);
+
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    addressId = resultSet.getInt("AddId"); // Fetch the address ID
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+        }
+
+        return addressId;
+    }
+
     /**
      * Loads the selected restaurant's page or detailed view.
      *
@@ -310,8 +355,7 @@ public class AdminHomePage {
                 RestaurantPage controller = loader.getController();
 
                 // Here, use the appropriate user address ID (replace '1' with a dynamic ID from the logged-in user)
-                int userAddressId = 1; // Example: replace with logged-in user's address ID
-                controller.loadRestaurantPage(restaurant, userAddressId);
+                controller.loadRestaurantPage(restaurant, getAdminDefaultAddressId());
 
                 // Switch the main pane to the restaurant details pane
                 main_pane_adminPage.getChildren().clear();
@@ -684,4 +728,61 @@ public class AdminHomePage {
             edit_restaurant_address_txtfield.clear();
         }
     }
+
+    public void loadAdminOrders() {
+        // Clear existing VBox orders
+        vbox_admin_orders.getChildren().clear();
+
+        try {
+            // Fetch the customer's order details from the database
+            List<OrderDetail> customerOrderDetails = orderDAO.getUserOrderHistory(adminId);
+
+            if (customerOrderDetails.isEmpty()) {
+                Label noOrdersLabel = new Label("No orders available.");
+                noOrdersLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10;");
+                vbox_admin_orders.getChildren().add(noOrdersLabel);
+                return;
+            }
+
+            // Group order details by OrderId
+            Map<Integer, List<OrderDetail>> ordersGroupedByOrderId = customerOrderDetails.stream()
+                    .collect(Collectors.groupingBy(OrderDetail::getOrderId));
+
+            // Display grouped orders in the VBox
+            for (Map.Entry<Integer, List<OrderDetail>> entry : ordersGroupedByOrderId.entrySet()) {
+                int orderId = entry.getKey();
+                List<OrderDetail> orderDetails = entry.getValue();
+
+                VBox orderBox = new VBox();
+                orderBox.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5px; -fx-background-color: #f9f9f9; -fx-spacing: 5;");
+
+                // Add order details (Order ID)
+                Label orderLabel = new Label("Order ID: " + orderId);
+                orderLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+                VBox detailsBox = new VBox();
+                detailsBox.setStyle("-fx-spacing: 5; -fx-padding: 5;");
+
+                for (OrderDetail detail : orderDetails) {
+                    Label detailLabel = new Label(
+                            "Item ID: " + detail.getItemId() +
+                                    ", Quantity: " + detail.getCount() +
+                                    ", Price: $" + detail.getPrice() +
+                                    ", Total: $" + detail.calculateTotal()
+                    );
+                    detailLabel.setStyle("-fx-font-size: 14px;");
+                    detailsBox.getChildren().add(detailLabel);
+                }
+
+                orderBox.getChildren().addAll(orderLabel, detailsBox);
+                vbox_admin_orders.getChildren().add(orderBox);
+            }
+        } catch (Exception e) {
+            Label errorLabel = new Label("Failed to load orders. Please try again.");
+            errorLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10; -fx-text-fill: red;");
+            vbox_admin_orders.getChildren().add(errorLabel);
+            e.printStackTrace();
+        }
+    }
+
 }

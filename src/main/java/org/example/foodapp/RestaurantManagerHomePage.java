@@ -1,6 +1,9 @@
 package org.example.foodapp;
 
+import Classes.OrderDetail;
 import Classes.Restaurant;
+import DaoClasses.OrderDAO;
+import DaoClasses.OrderDetailDAO;
 import DaoClasses.RestaurantDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,10 +12,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RestaurantManagerHomePage {
 
@@ -42,6 +52,11 @@ public class RestaurantManagerHomePage {
     private int selectedRestaurantId = -1; // To track the selected restaurant for deletion
 
 
+    @FXML
+    private HBox hbox_manager_history_orders;
+    private OrderDAO orderDAO = new OrderDAO();
+    private OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+
 
 
     /**
@@ -52,23 +67,42 @@ public class RestaurantManagerHomePage {
     public void loadManagerName(String name) {
         manager_name.setText(name);
     }
-    public void setManagerData(int managerId, String managerName) {
-        this.managerId = managerId; // Set the manager's ID
-        loadManagerName(managerName); // Set the manager's name in the label
-        this.managerName = managerName;
-
-
-        // Load the manager's restaurants and display them
-        loadManagerRestaurants();
-
-        // Show the manager's profile pane
-        showProfilePane();
-    }
+//    public void setManagerData(int managerId, String managerName) {
+//        this.managerId = managerId; // Set the manager's ID
+//        loadManagerName(managerName); // Set the manager's name in the label
+//        this.managerName = managerName;
+//
+//
+//        // Load the manager's restaurants and display them
+//        loadManagerRestaurants();
+//
+//        loadManagerOrders();
+//
+//        // Show the manager's profile pane
+//        showProfilePane();
+//    }
     public void setManagerId(int managerId) {
         this.managerId = managerId;
         setManagerData(managerId,managerName); // Set the manager's name in the label
     }
 
+    public void setManagerData(int managerId, String managerName) {
+        this.managerId = managerId;
+        this.managerName = managerName;
+        loadManagerName(managerName);
+
+        int addressId = getManagerDefaultAddressId();
+
+        if (addressId != -1) {
+            System.out.println("Manager's Default Address ID: " + addressId);
+        } else {
+            System.out.println("No default address found for the manager.");
+        }
+
+        loadManagerRestaurants();
+        loadManagerOrders();
+        showProfilePane();
+    }
 
     @FXML
     public void showProfilePane() {
@@ -119,6 +153,29 @@ public class RestaurantManagerHomePage {
         }
     }
 
+
+    private int getManagerDefaultAddressId() {
+        String procedureCall = "{CALL GetDefaultAddressByUserId(?)}";
+        int addressId = -1; // Default value indicating no address found
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(procedureCall)) {
+
+            // Set the manager's ID as input
+            callableStatement.setInt(1, managerId);
+
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    addressId = resultSet.getInt("AddId"); // Fetch the address ID
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+        }
+
+        return addressId;
+    }
+
     /**
      * Loads the selected restaurant's page or detailed view.
      *
@@ -137,7 +194,7 @@ public class RestaurantManagerHomePage {
 
                 // Pass restaurant details to the controller
                 RestaurantPage controller = loader.getController();
-                controller.loadRestaurantPage(restaurant, 1);
+                controller.loadRestaurantPage(restaurant, getManagerDefaultAddressId());
 
                 // Switch the main pane to the restaurant details pane
                 main_pane_managerPage.getChildren().clear();
@@ -271,6 +328,63 @@ public class RestaurantManagerHomePage {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Error", "Failed to load the restaurant editing page.");
+        }
+    }
+
+    public void loadManagerOrders() {
+        // Clear existing orders in the HBox
+        hbox_manager_history_orders.getChildren().clear();
+
+        try {
+            // Fetch the manager's order details from the database
+            List<OrderDetail> managerOrderDetails = orderDAO.getUserOrderHistory(managerId); // Ensure this DAO method exists
+
+            if (managerOrderDetails.isEmpty()) {
+                Label noOrdersLabel = new Label("No orders available.");
+                noOrdersLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10;");
+                hbox_manager_history_orders.getChildren().add(noOrdersLabel);
+                return;
+            }
+
+            // Group order details by OrderId
+            Map<Integer, List<OrderDetail>> ordersGroupedByOrderId = managerOrderDetails.stream()
+                    .collect(Collectors.groupingBy(OrderDetail::getOrderId));
+
+            // Display grouped orders in the HBox
+            for (Map.Entry<Integer, List<OrderDetail>> entry : ordersGroupedByOrderId.entrySet()) {
+                int orderId = entry.getKey();
+                List<OrderDetail> orderDetails = entry.getValue();
+
+                VBox orderBox = new VBox();
+                orderBox.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5px; -fx-background-color: #f9f9f9; -fx-spacing: 5;");
+                orderBox.setPrefWidth(200); // Set a fixed width for each order box
+
+                // Add order details (Order ID)
+                Label orderLabel = new Label("Order ID: " + orderId);
+                orderLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+                VBox detailsBox = new VBox();
+                detailsBox.setStyle("-fx-spacing: 5; -fx-padding: 5;");
+
+                for (OrderDetail detail : orderDetails) {
+                    Label detailLabel = new Label(
+                            "Item ID: " + detail.getItemId() +
+                                    ", Quantity: " + detail.getCount() +
+                                    ", Price: $" + detail.getPrice() +
+                                    ", Total: $" + detail.calculateTotal()
+                    );
+                    detailLabel.setStyle("-fx-font-size: 14px;");
+                    detailsBox.getChildren().add(detailLabel);
+                }
+
+                orderBox.getChildren().addAll(orderLabel, detailsBox);
+                hbox_manager_history_orders.getChildren().add(orderBox);
+            }
+        } catch (Exception e) {
+            Label errorLabel = new Label("Failed to load orders. Please try again.");
+            errorLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10; -fx-text-fill: red;");
+            hbox_manager_history_orders.getChildren().add(errorLabel);
+            e.printStackTrace();
         }
     }
 

@@ -124,7 +124,7 @@ public class Login {
                 RestaurantManagerHomePage managerController = loader.getController();
 
                 // Pass the user data (ID and name) to the controller
-                managerController.setManagerData(user.getUserId(), user.getName());
+                managerController.setManagerData(userId, user.getName());
 
                 // Set the scene
                 Scene managerScene = new Scene(managerPage);
