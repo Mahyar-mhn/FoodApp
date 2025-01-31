@@ -37,6 +37,7 @@ public class RestaurantManagerHomePage {
     private VBox vbox_scroll_pane_manager_homePage;
 
     private int managerId; // ID of the logged-in manager
+    private String managerName;
     private RestaurantDAO restaurantDAO = new RestaurantDAO(); // DAO instance
     private int selectedRestaurantId = -1; // To track the selected restaurant for deletion
 
@@ -51,14 +52,23 @@ public class RestaurantManagerHomePage {
     public void loadManagerName(String name) {
         manager_name.setText(name);
     }
-    public void setManagerId(int managerId) {
-        this.managerId = managerId;
+    public void setManagerData(int managerId, String managerName) {
+        this.managerId = managerId; // Set the manager's ID
+        loadManagerName(managerName); // Set the manager's name in the label
+        this.managerName = managerName;
+
+
+        // Load the manager's restaurants and display them
         loadManagerRestaurants();
-    }
-    @FXML
-    public void initialize() {
+
+        // Show the manager's profile pane
         showProfilePane();
     }
+    public void setManagerId(int managerId) {
+        this.managerId = managerId;
+        setManagerData(managerId,managerName); // Set the manager's name in the label
+    }
+
 
     @FXML
     public void showProfilePane() {

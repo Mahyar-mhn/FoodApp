@@ -97,27 +97,34 @@ public class Login {
             FXMLLoader loader;
             if ("Admin".equalsIgnoreCase(role)) {
                 showAlert("Login Successful", "Welcome Admin: " + user.getName() + "!");
+
+                // Load AdminHomePage.fxml
                 loader = new FXMLLoader(getClass().getResource("AdminHomePage.fxml"));
                 AnchorPane adminPage = loader.load();
 
-                // Pass the user name to the AdminHomePage controller
+                // Get the controller for AdminHomePage
                 AdminHomePage adminController = loader.getController();
-                adminController.loadAdminName(user.getName());
 
-                // Set the scene
+                // Pass data (user name and ID) to the controller
+                adminController.setAdminData(user.getUserId(), user.getName());
+
+                // Set the scene for the Admin page
                 Scene adminScene = new Scene(adminPage);
                 stage.setScene(adminScene);
                 stage.setTitle("Admin Page");
 
             } else if ("Manager".equalsIgnoreCase(role)) {
                 showAlert("Login Successful", "Welcome Manager: " + user.getName() + "!");
+
+                // Load RestaurantManagerHomePage.fxml
                 loader = new FXMLLoader(getClass().getResource("RestaurantManagerHomePage.fxml"));
                 AnchorPane managerPage = loader.load();
 
-                // Pass the user name to the RestaurantManagerHomePage controller
+                // Get the controller for RestaurantManagerHomePage
                 RestaurantManagerHomePage managerController = loader.getController();
-                managerController.loadManagerName(user.getName());
-                managerController.setManagerId(user.getUserId());
+
+                // Pass the user data (ID and name) to the controller
+                managerController.setManagerData(user.getUserId(), user.getName());
 
                 // Set the scene
                 Scene managerScene = new Scene(managerPage);
@@ -126,11 +133,15 @@ public class Login {
 
             } else {
                 showAlert("Login Successful", "Welcome, " + user.getName() + "!");
+
+                // Load CustomerHomePage.fxml
                 loader = new FXMLLoader(getClass().getResource("CustomerHomePage.fxml"));
                 AnchorPane customerPage = loader.load();
 
-                // Get the controller instance
+                // Get the controller for CustomerHomePage
                 CustomerHomePage customerController = loader.getController();
+
+                // Pass the user data (ID and name) to the controller
                 customerController.setCustomerData(userId, user.getName());
 
                 // Set the scene
@@ -146,7 +157,6 @@ public class Login {
             showAlert("Navigation Error", "Failed to navigate to the appropriate page.");
         }
     }
-
 
     /**
      * Displays an alert dialog to the user.

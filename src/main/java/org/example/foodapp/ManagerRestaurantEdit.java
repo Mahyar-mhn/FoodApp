@@ -304,6 +304,7 @@ public class ManagerRestaurantEdit {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("RestaurantManagerHomePage.fxml"));
             AnchorPane managerHomePage = loader.load();
             RestaurantManagerHomePage controller = loader.getController();
+
             // Reload the manager's restaurants when returning
             controller.setManagerId(currentRestaurant.getRestaurantId()); // Ensure restaurants are reloaded
             restaurant_name_txtfield.getScene().setRoot(managerHomePage);

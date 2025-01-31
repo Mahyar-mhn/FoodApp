@@ -126,6 +126,9 @@ public class AdminHomePage {
     private int selectedRestaurantIdToRemove = -1; // For removal
 
 
+    private int adminId; // Admin ID for the logged-in user
+
+
     /**
      * Sets the customer name into the label.
      *
@@ -135,39 +138,35 @@ public class AdminHomePage {
         admin_name.setText(name);
     }
 
-    @FXML
-    public void initialize() {
-        // Set the admin name dynamically
-        admin_name.setText("John Doe"); // Replace with actual admin name from the backend
+    /**
+     * Sets the admin data (ID and name) and initializes the page.
+     *
+     * @param adminId   The ID of the admin.
+     * @param adminName The name of the admin.
+     */
+    public void setAdminData(int adminId, String adminName) {
+        this.adminId = adminId;
 
-        // Load the initial content (profile view)
+        // Set the admin name
+        loadAdminName(adminName);
+
+        // Load profile pane and other data
         showProfilePane();
-
-        // Populate the role ChoiceBox with values
         populateRoleChoiceBox(edit_user_role_choicebox);
         populateRoleChoiceBox(add_user_role_choicebox);
-
-
-
-
-        // Set up event handlers for buttons
-        manage_restaurant_button.setOnAction(event -> toggleManageRestaurants());
-        manage_user_button.setOnAction(event -> toggleManageUsers());
-        remove_user_button.setOnAction(event -> handleRemoveUser());
-
-
-        // Load initial restaurant data
         loadRestaurantsIntoEditScrollPane();
         loadRestaurantsIntoRemoveScrollPane();
 
         // Event handlers
-        manage_user_button.setOnAction(event -> toggleManageUsers());
         manage_restaurant_button.setOnAction(event -> toggleManageRestaurants());
+        manage_user_button.setOnAction(event -> toggleManageUsers());
         add_restaurant_button.setOnAction(event -> handleAddRestaurant());
         remove_restaurant_button.setOnAction(event -> handleRemoveRestaurant());
         edit_restaurant_submission_button.setOnAction(event -> updateRestaurantDetails());
-
+        remove_user_button.setOnAction(event -> handleRemoveUser());
     }
+
+
 
     private void loadUsersIntoRemoveScrollPane() {
         List<User> users = userDAO.getAllUsers();
