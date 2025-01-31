@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.RestaurantManagerHomePage">
     <children>
-        <AnchorPane fx:id="main_pane_adminPage" layoutX="325.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="main_pane_managerPage" layoutX="325.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Separator layoutX="350.0" layoutY="130.0" prefWidth="800.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0" />
                 <AnchorPane layoutX="342.0" layoutY="115.0" prefHeight="100.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -22,7 +22,7 @@
                                 <Font size="24.0" />
                             </font>
                         </Label>
-                        <Label fx:id="manager_name" alignment="CENTER" contentDisplay="CENTER" layoutX="390.0" layoutY="50.0" text="Manager Name">
+                        <Label fx:id="manager_name" alignment="CENTER" contentDisplay="CENTER" layoutX="390.0" layoutY="50.0" text="Manager Name" textAlignment="CENTER">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -61,7 +61,8 @@
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="850.0">
                                                     <children>
-                                                        <VBox fx:id="remove_restaurant_vbox" layoutX="10.0" layoutY="10.0" prefHeight="500.0" prefWidth="820.0" />
+                                                        <VBox fx:id="vbox_manager_restarurants" layoutX="10.0" layoutY="10.0" prefHeight="190.0" prefWidth="820.0" />
+                                          <Button fx:id="edit_manager_restaurant_items" layoutX="425.0" layoutY="312.0" mnemonicParsing="false" onAction="#handleEditManagerRestaurant" text="edit this restaurant" />
                                                     </children>
                                                 </AnchorPane>
                                             </content>
@@ -71,8 +72,7 @@
                                                 <Font size="24.0" />
                                             </font>
                                         </Label>
-                                        <Button fx:id="add_restaurant_button" layoutX="100.0" layoutY="500.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Add" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="100.0" />
-                                        <Button fx:id="remove_restaurant_button" layoutX="250.0" layoutY="500.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Delete" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="250.0" />
+                                        <Button fx:id="remove_restaurant_button" layoutX="250.0" layoutY="500.0" mnemonicParsing="false" onAction="#handleDeleteRestaurant" prefHeight="25.0" prefWidth="100.0" text="Delete" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="250.0" />
                                     </children>
                                 </AnchorPane>
                             </content>

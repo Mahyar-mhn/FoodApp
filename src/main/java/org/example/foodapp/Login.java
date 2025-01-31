@@ -3,10 +3,15 @@ package org.example.foodapp;
 import Classes.User;
 import DaoClasses.UserDAO;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Login {
 
@@ -88,21 +93,59 @@ public class Login {
         Stage stage = (Stage) login_submit_button.getScene().getWindow();
 
         try {
+            FXMLLoader loader;
             if ("Admin".equalsIgnoreCase(role)) {
                 showAlert("Login Successful", "Welcome Admin: " + user.getName() + "!");
-                SceneChanger.changeScene(stage, "AdminHomePage.fxml", "Admin Page");
+                loader = new FXMLLoader(getClass().getResource("AdminHomePage.fxml"));
+                AnchorPane adminPage = loader.load();
+
+                // Pass the user name to the AdminHomePage controller
+                AdminHomePage adminController = loader.getController();
+                adminController.loadAdminName(user.getName());
+
+                // Set the scene
+                Scene adminScene = new Scene(adminPage);
+                stage.setScene(adminScene);
+                stage.setTitle("Admin Page");
+
             } else if ("Manager".equalsIgnoreCase(role)) {
                 showAlert("Login Successful", "Welcome Manager: " + user.getName() + "!");
-                SceneChanger.changeScene(stage, "RestaurantManagerHomePage.fxml", "Manager Page");
+                loader = new FXMLLoader(getClass().getResource("RestaurantManagerHomePage.fxml"));
+                AnchorPane managerPage = loader.load();
+
+                // Pass the user name to the RestaurantManagerHomePage controller
+                RestaurantManagerHomePage managerController = loader.getController();
+                managerController.loadManagerName(user.getName());
+                managerController.setManagerId(user.getUserId());
+
+                // Set the scene
+                Scene managerScene = new Scene(managerPage);
+                stage.setScene(managerScene);
+                stage.setTitle("Manager Page");
+
             } else {
                 showAlert("Login Successful", "Welcome, " + user.getName() + "!");
-                SceneChanger.changeScene(stage, "CustomerHomePage.fxml", "Customer Page");
+                loader = new FXMLLoader(getClass().getResource("CustomerHomePage.fxml"));
+                AnchorPane customerPage = loader.load();
+
+                // Pass the user name to the CustomerHomePage controller
+                CustomerHomePage customerController = loader.getController();
+                customerController.loadCustomerName(user.getName());
+
+                // Set the scene
+                Scene customerScene = new Scene(customerPage);
+                stage.setScene(customerScene);
+                stage.setTitle("Customer Page");
             }
-        } catch (Exception e) {
+
+            stage.show();
+
+        } catch (IOException e) {
             e.printStackTrace();
             showAlert("Navigation Error", "Failed to navigate to the appropriate page.");
         }
     }
+
 
     /**
      * Displays an alert dialog to the user.

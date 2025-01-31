@@ -126,6 +126,15 @@ public class AdminHomePage {
     private int selectedRestaurantIdToRemove = -1; // For removal
 
 
+    /**
+     * Sets the customer name into the label.
+     *
+     * @param name The name of the customer.
+     */
+    public void loadAdminName(String name) {
+        admin_name.setText(name);
+    }
+
     @FXML
     public void initialize() {
         // Set the admin name dynamically
@@ -210,13 +219,7 @@ public class AdminHomePage {
      * @param title   The title of the alert.
      * @param message The message to display.
      */
-//    private void showAlert(String title, String message) {
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle(title);
-//        alert.setHeaderText(null);
-//        alert.setContentText(message);
-//        alert.showAndWait();
-//    }
+
     /**
      * Populates the role ChoiceBox with the values: Admin, Manager, and User.
      */
@@ -249,40 +252,42 @@ public class AdminHomePage {
         RestaurantDAO restaurantDAO = new RestaurantDAO();
         List<Restaurant> restaurants = restaurantDAO.getAllRestaurants();
 
-        // Load each restaurant as a cart
+        // Load only non-deleted restaurants as a cart
         for (Restaurant restaurant : restaurants) {
-            try {
-                // Load the RestaurantCart.fxml file
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("RestaurantCart.fxml"));
-                AnchorPane restaurantCart = loader.load();
+            if (!restaurant.isDeleted()) { // Check the isDeleted flag
+                try {
+                    // Load the RestaurantCart.fxml file
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("RestaurantCart.fxml"));
+                    AnchorPane restaurantCart = loader.load();
 
-                // Get the controller for the cart
-                RestaurantCart controller = loader.getController();
-                controller.setRestaurantData(
-                        restaurant.getName(),
-                        "file:src/main/resources/images/" + restaurant.getPhoto()
-                );
+                    // Get the controller for the cart
+                    RestaurantCart controller = loader.getController();
+                    controller.setRestaurantData(
+                            restaurant.getName(),
+                            "file:src/main/resources/images/" + restaurant.getPhoto()
+                    );
 
-                // Add hover effects
-                restaurantCart.setOnMouseEntered(event -> {
-                    restaurantCart.setStyle("-fx-background-color: #e0e0e0; -fx-border-color: #ccc; -fx-border-radius: 8px;");
-                });
+                    // Add hover effects
+                    restaurantCart.setOnMouseEntered(event -> {
+                        restaurantCart.setStyle("-fx-background-color: #e0e0e0; -fx-border-color: #ccc; -fx-border-radius: 8px;");
+                    });
 
-                restaurantCart.setOnMouseExited(event -> {
-                    restaurantCart.setStyle("-fx-background-color: #ffffff; -fx-border-color: #ccc; -fx-border-radius: 8px;");
-                });
+                    restaurantCart.setOnMouseExited(event -> {
+                        restaurantCart.setStyle("-fx-background-color: #ffffff; -fx-border-color: #ccc; -fx-border-radius: 8px;");
+                    });
 
-                // Add click event to load selected restaurant's detailed page
-                restaurantCart.setOnMouseClicked(event -> {
-                    System.out.println("Clicked on: " + restaurant.getName());
-                    loadSelectedRestaurantPage(restaurant.getRestaurantId());
-                });
+                    // Add click event to load selected restaurant's detailed page
+                    restaurantCart.setOnMouseClicked(event -> {
+                        System.out.println("Clicked on: " + restaurant.getName());
+                        loadSelectedRestaurantPage(restaurant.getRestaurantId());
+                    });
 
-                // Add the cart to the VBox
-                vbox_scroll_pane_admin_homePage.getChildren().add(restaurantCart);
+                    // Add the cart to the VBox
+                    vbox_scroll_pane_admin_homePage.getChildren().add(restaurantCart);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

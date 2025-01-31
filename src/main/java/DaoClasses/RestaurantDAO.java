@@ -199,5 +199,46 @@ public class RestaurantDAO {
         return workingTimes;
     }
 
+    /**
+     * Fetches all restaurants managed by a specific manager using the stored procedure `GetRestaurantsByManager`.
+     *
+     * @param managerId The ID of the manager.
+     * @return A list of restaurants managed by the given manager.
+     */
+    public List<Restaurant> getRestaurantsByManagerId(int managerId) {
+        List<Restaurant> restaurants = new ArrayList<>();
+        String procedureCall = "{CALL GetRestaurantsByManager(?)}"; // Procedure name
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(procedureCall)) {
+
+            // Set the input parameter for the procedure
+            callableStatement.setInt(1, managerId);
+
+            // Execute the stored procedure and process the result set
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Restaurant restaurant = new Restaurant(
+                            resultSet.getInt("RestaurantId"),       // Restaurant ID
+                            resultSet.getString("Name"),            // Name
+                            resultSet.getString("Photo"),           // Photo URL or path
+                            resultSet.getDouble("MinPurchase"),     // Minimum purchase amount
+                            resultSet.getString("City"),            // City
+                            resultSet.getString("Address"),         // Address
+                            resultSet.getString("Coordinate"),      // Coordinate or Description
+                            resultSet.getBoolean("IsDeleted")       // IsDeleted flag
+                    );
+                    restaurants.add(restaurant);
+                }
+            }
+        } catch (SQLException e) {
+            // Log any SQL exceptions for debugging purposes
+            System.err.println("Error fetching restaurants for manager ID " + managerId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return restaurants; // Return the list of restaurants
+    }
+
 
 }

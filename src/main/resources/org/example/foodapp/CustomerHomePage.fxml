@@ -5,12 +5,12 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.CustomerHomePage">
    <children>
-      <AnchorPane layoutX="339.0" layoutY="191.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="main_pane_customerPage" layoutX="339.0" layoutY="191.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Separator layoutX="174.0" layoutY="200.0" orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="644.0" AnchorPane.topAnchor="10.0" />
             <AnchorPane layoutX="14.0" layoutY="200.0" prefHeight="600.0" prefWidth="251.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="644.0" AnchorPane.topAnchor="0.0">
@@ -20,7 +20,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label layoutX="86.0" layoutY="78.0" text="customer_name" AnchorPane.topAnchor="72.0" />
+                  <Label fx:id="customer_name" layoutX="86.0" layoutY="78.0" text="customer_name" AnchorPane.topAnchor="72.0" />
                   <Separator layoutX="28.0" layoutY="112.0" prefWidth="200.0" AnchorPane.topAnchor="126.0" />
                   <Button layoutX="81.0" layoutY="535.0" mnemonicParsing="false" text="Shopping Cart" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="81.0" />
                </children>
@@ -29,7 +29,10 @@
                <children>
                   <ScrollPane layoutX="225.0" layoutY="100.0" prefHeight="200.0" prefWidth="630.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="85.0">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="199.0" prefWidth="629.0" />
+                      <AnchorPane fx:id="scroll_pane_customer_homePage" minHeight="0.0" minWidth="0.0" prefHeight="539.0" prefWidth="629.0">
+                           <children>
+                              <VBox fx:id="vbox_scroll_pane_customer_homePage" layoutX="241.0" layoutY="-15.0" prefHeight="380.0" prefWidth="629.0" AnchorPane.bottomAnchor="-4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children></AnchorPane>
                     </content>
                   </ScrollPane>
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="43.0" layoutY="29.0" text="What would you eat today?!" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">

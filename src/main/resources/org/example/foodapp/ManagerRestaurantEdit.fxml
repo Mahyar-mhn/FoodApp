@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.example.foodapp.ManagerRestaurantEdit">
+    <children>
+      <AnchorPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TabPane prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="restaurantInfo">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                                <TextField fx:id="restaurant_city_txtfield" layoutX="375.0" layoutY="259.0" promptText="City" />
+                                <TextField fx:id="restaurant_address_txtfield" layoutX="375.0" layoutY="191.0" promptText="Address" />
+                                <Button layoutX="498.0" layoutY="361.0" onAction="#handleCancel" text="Cancel" />
+                                <Button layoutX="375.0" layoutY="361.0" onAction="#handleSaveChanges" text="Save Changes" />
+                                <TextField fx:id="restaurant_name_txtfield" layoutX="375.0" layoutY="130.0" promptText="Restaurant Name" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="itemInfo">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ScrollPane layoutX="350.0" layoutY="98.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="85.0">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="848.0">
+                                       <children>
+                                          <HBox fx:id="hbox_item_scrol_pane" layoutX="14.0" layoutY="50.0" prefHeight="200.0" prefWidth="848.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                              <Label layoutX="20.0" layoutY="48.0" text="Items" AnchorPane.topAnchor="40.0">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="delete_item_button" layoutX="167.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleDeleteItem" prefWidth="100.0" text="Delete" />
+                              <TextField fx:id="item_name_txtfield" layoutX="565.0" layoutY="315.0" promptText="name" />
+                              <TextField fx:id="item_price_txtfield" layoutX="565.0" layoutY="361.0" promptText="price" />
+                              <TextField fx:id="item_photo_txtfield" layoutX="565.0" layoutY="403.0" promptText="photo" />
+                              <TextField fx:id="item_detail_txtfield" layoutX="565.0" layoutY="446.0" promptText="detail" />
+                              <Button fx:id="edit_item_button" layoutX="621.0" layoutY="498.0" mnemonicParsing="false" onAction="#handleEditItem" text="Edit" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="insertItem">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="new_item_name_txtfield" layoutX="376.0" layoutY="122.0" promptText="new item name" />
+                              <TextField fx:id="new_item_price_txtfield" layoutX="376.0" layoutY="168.0" promptText="new item price" />
+                              <TextField fx:id="new_item_photo_txtfield" layoutX="376.0" layoutY="219.0" promptText="new item photo" />
+                              <TextField fx:id="new_item_detail_txtfield" layoutX="376.0" layoutY="273.0" promptText="new item detail" />
+                              <Button fx:id="add_item_button" layoutX="430.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleAddItem" text="ADD" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+    </children>
+</AnchorPane>
