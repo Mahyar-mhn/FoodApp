@@ -34,7 +34,7 @@
                   <Button fx:id="manage_user_button" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="256.0" mnemonicParsing="false" onAction="#toggleManageUsers" prefHeight="30.0" prefWidth="150.0" text="Manage Users" textAlignment="CENTER" textOverrun="CENTER_WORD_ELLIPSIS" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="ordering_pane_admin" layoutX="250.0" layoutY="193.0" prefHeight="600.0" prefWidth="650.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="ordering_pane_admin" layoutX="250.0" layoutY="193.0" prefHeight="600.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label layoutX="27.0" layoutY="21.0" text="What would you eat today?!" AnchorPane.bottomAnchor="543.3333333333333" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
                      <font>
@@ -124,7 +124,7 @@
                      </TabPane>
                  </children>
              </AnchorPane>
-            <AnchorPane fx:id="user_manage_pane" layoutX="475.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="user_manage_pane" layoutX="475.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <TabPane layoutX="225.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <tabs>

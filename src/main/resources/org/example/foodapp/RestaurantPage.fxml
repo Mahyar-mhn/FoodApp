@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.RestaurantPage">
+   <children>
+      <Separator layoutX="350.0" layoutY="116.0" prefWidth="200.0" AnchorPane.bottomAnchor="490.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0" />
+      <AnchorPane layoutX="350.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="490.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="Restaurant_name_label" alignment="CENTER" layoutX="300.0" layoutY="37.0" text="Selected Restaurant Name" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.66666666666663" AnchorPane.topAnchor="37.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <ScrollPane layoutX="350.0" layoutY="95.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
+              <content>
+                <AnchorPane fx:id="scrolPane_RestaurantPage" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="1278.0">
+                     <children>
+                        <HBox fx:id="Hbox_scrollPane_RestaurantPage" layoutX="41.0" layoutY="50.0" prefHeight="160.0" prefWidth="985.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="20.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+            <Label layoutX="20.0" layoutY="22.0" text="Menu!" AnchorPane.bottomAnchor="440.0" AnchorPane.leftAnchor="20.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TableView fx:id="workingtime_table_restaurantPage" layoutX="54.0" layoutY="336.0" prefHeight="150.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0">
+              <columns>
+                <TableColumn fx:id="Day_column" prefWidth="75.0" text="Day" />
+                <TableColumn fx:id="OpenAt_column" prefWidth="75.0" text="Open" />
+                  <TableColumn fx:id="CloseAt_column" prefWidth="75.0" text="Close" />
+              </columns>
+            </TableView>
+            <Label layoutX="118.0" layoutY="296.0" text="Working Time">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

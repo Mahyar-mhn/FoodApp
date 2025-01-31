@@ -1,6 +1,7 @@
 package DaoClasses;
 
 import Classes.Restaurant;
+import Classes.WorkingTime;
 import org.example.foodapp.DatabaseConnection;
 
 import java.sql.*;
@@ -155,4 +156,48 @@ public class RestaurantDAO {
 
         return null;
     }
+
+
+
+    /**
+     * Retrieves the working times of a restaurant using the GetRestaurantWorkingTime stored procedure.
+     *
+     * @param restaurantId The ID of the restaurant.
+     * @return A list of WorkingTime objects representing working times.
+     */
+    public List<WorkingTime> getRestaurantWorkingTime(int restaurantId) {
+        List<WorkingTime> workingTimes = new ArrayList<>();
+        String procedureCall = "{CALL GetRestaurantWorkingTime(?)}";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(procedureCall)) {
+
+            // Set input parameter for the stored procedure
+            callableStatement.setInt(1, restaurantId);
+
+            // Execute the stored procedure and process the result set
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // Create a WorkingTime object for each row
+                    WorkingTime workingTime = new WorkingTime(
+                            resultSet.getInt("WorkingTimeId"),
+                            restaurantId,  // Use the restaurantId passed as input
+                            resultSet.getString("Day"),
+                            resultSet.getString("OpenAt"),
+                            resultSet.getString("CloseAt")
+                    );
+
+                    // Add the WorkingTime object to the list
+                    workingTimes.add(workingTime);
+                }
+            }
+        } catch (SQLException e) {
+            // Log the exception for debugging
+            e.printStackTrace();
+        }
+
+        return workingTimes;
+    }
+
+
 }

@@ -231,6 +231,7 @@ public class AdminHomePage {
      */
     @FXML
     private void showProfilePane() {
+        // Show and reset the visibility of panes
         profile_pane_admin.setVisible(true);
         scroll_pane_admin_homePage.setVisible(true);
         ordering_pane_admin.setVisible(true);
@@ -251,26 +252,69 @@ public class AdminHomePage {
         // Load each restaurant as a cart
         for (Restaurant restaurant : restaurants) {
             try {
+                // Load the RestaurantCart.fxml file
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("RestaurantCart.fxml"));
                 AnchorPane restaurantCart = loader.load();
 
+                // Get the controller for the cart
                 RestaurantCart controller = loader.getController();
                 controller.setRestaurantData(
                         restaurant.getName(),
                         "file:src/main/resources/images/" + restaurant.getPhoto()
                 );
 
-                restaurantCart.setOnMouseEntered(event -> restaurantCart.setStyle(
-                        "-fx-background-color: #e0e0e0; -fx-border-color: #ccc; -fx-border-radius: 8px;"));
-                restaurantCart.setOnMouseExited(event -> restaurantCart.setStyle(
-                        "-fx-background-color: #ffffff; -fx-border-color: #ccc; -fx-border-radius: 8px;"));
+                // Add hover effects
+                restaurantCart.setOnMouseEntered(event -> {
+                    restaurantCart.setStyle("-fx-background-color: #e0e0e0; -fx-border-color: #ccc; -fx-border-radius: 8px;");
+                });
 
-                restaurantCart.setOnMouseClicked(event -> System.out.println("Clicked on: " + restaurant.getName()));
+                restaurantCart.setOnMouseExited(event -> {
+                    restaurantCart.setStyle("-fx-background-color: #ffffff; -fx-border-color: #ccc; -fx-border-radius: 8px;");
+                });
 
+                // Add click event to load selected restaurant's detailed page
+                restaurantCart.setOnMouseClicked(event -> {
+                    System.out.println("Clicked on: " + restaurant.getName());
+                    loadSelectedRestaurantPage(restaurant.getRestaurantId());
+                });
+
+                // Add the cart to the VBox
                 vbox_scroll_pane_admin_homePage.getChildren().add(restaurantCart);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * Loads the selected restaurant's page or detailed view.
+     *
+     * @param restaurantId The ID of the selected restaurant.
+     */
+    private void loadSelectedRestaurantPage(int restaurantId) {
+        try {
+            // Fetch restaurant details from the database using the RestaurantDAO
+            RestaurantDAO restaurantDAO = new RestaurantDAO();
+            Restaurant restaurant = restaurantDAO.getRestaurantById(restaurantId);
+
+            if (restaurant != null) {
+                System.out.println("Loading details for: " + restaurant.getName());
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("RestaurantPage.fxml"));
+                AnchorPane restaurantDetailsPane = loader.load();
+
+                // Pass restaurant details to the controller
+                RestaurantPage controller = loader.getController();
+                controller.loadRestaurantPage(restaurant);
+
+                // Switch the main pane to the restaurant details pane
+                main_pane_adminPage.getChildren().clear();
+                main_pane_adminPage.getChildren().add(restaurantDetailsPane);
+            } else {
+                System.out.println("Restaurant not found!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
