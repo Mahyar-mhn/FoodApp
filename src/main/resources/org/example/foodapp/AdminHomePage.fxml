@@ -52,43 +52,78 @@
                   </ScrollPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="restaurant_manage_pane" layoutX="475.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <TabPane layoutX="225.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <tabs>
-                      <Tab text="Remove">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <ScrollPane layoutX="234.0" layoutY="182.0" prefHeight="200.0" prefWidth="570.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="85.0">
-                                      <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="347.0" prefWidth="562.0" />
-                                      </content>
-                                    </ScrollPane>
-                                    <Label layoutX="40.0" layoutY="40.0" text="Lsit of All Restaurants:)" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                    <Button layoutX="239.0" layoutY="316.0" mnemonicParsing="false" text="Delete the selected Record" AnchorPane.bottomAnchor="200.0" />
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </Tab>
-                      <Tab text="Insert">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </Tab>
-                        <Tab text="Edit">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                          </content>
-                        </Tab>
-                    </tabs>
-                  </TabPane>
-               </children>
-            </AnchorPane>
+             <AnchorPane fx:id="restaurant_manage_pane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                 <children>
+                     <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                         <tabs>
+                             <!-- Remove Tab -->
+                             <Tab text="Remove">
+                                 <content>
+                                     <AnchorPane>
+                                         <children>
+                                             <ScrollPane prefHeight="200.0" prefWidth="570.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="85.0">
+                                                 <content>
+                                                     <AnchorPane fx:id="remove_restaurant_scroll_pane" prefHeight="347.0" prefWidth="562.0">
+                                                         <children>
+                                                             <VBox fx:id="remove_restaurant_vbox" prefHeight="413.0" prefWidth="618.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                     </AnchorPane>
+                                                 </content>
+                                             </ScrollPane>
+                                             <Label layoutX="40.0" layoutY="40.0" text="List of All Restaurants:" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+                                                 <font>
+                                                     <Font size="24.0" />
+                                                 </font>
+                                             </Label>
+                                             <Button fx:id="remove_restaurant_button" layoutX="239.0" layoutY="316.0" mnemonicParsing="false" text="Delete the Selected Record" />
+                                         </children>
+                                     </AnchorPane>
+                                 </content>
+                             </Tab>
+                             <!-- Insert Tab -->
+                             <Tab text="Insert">
+                                 <content>
+                                     <AnchorPane>
+                                         <children>
+                                             <TextField fx:id="add_restaurant_name_txtfield" layoutX="253.0" layoutY="172.0" promptText="Restaurant Name" />
+                                             <TextField fx:id="add_restaurant_city_txtfield" layoutX="251.0" layoutY="218.0" promptText="City" />
+                                             <TextField fx:id="add_restaurant_address_txtfield" layoutX="251.0" layoutY="263.0" promptText="Address" />
+                                             <Button fx:id="add_restaurant_button" layoutX="302.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleAddRestaurant" text="ADD" />
+                                         </children>
+                                     </AnchorPane>
+                                 </content>
+                             </Tab>
+                             <!-- Edit Tab -->
+                             <Tab text="Edit">
+                                 <content>
+                                     <AnchorPane>
+                                         <children>
+                                             <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="85.0">
+                                                 <content>
+                                                     <AnchorPane fx:id="edit_restaurant_scroll_pane" prefHeight="641.0" prefWidth="217.0">
+                                                         <children>
+                                                             <VBox fx:id="edit_restaurant_scroll_vbox" prefHeight="163.0" prefWidth="217.0" AnchorPane.bottomAnchor="478.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                     </AnchorPane>
+                                                 </content>
+                                             </ScrollPane>
+                                             <Label layoutX="63.0" layoutY="33.0" text="Edit Restaurant:" AnchorPane.topAnchor="33.0">
+                                                 <font>
+                                                     <Font size="24.0" />
+                                                 </font>
+                                             </Label>
+                                             <TextField fx:id="edit_restaurant_name_txtfield" layoutX="400.0" layoutY="212.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="212.0" />
+                                             <TextField fx:id="edit_restaurant_city_txtfield" layoutX="400.0" layoutY="276.0" prefHeight="25.0" prefWidth="157.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" />
+                                             <TextField fx:id="edit_restaurant_address_txtfield" layoutX="400.0" layoutY="340.0" prefHeight="25.0" prefWidth="157.0" />
+                                             <Button fx:id="edit_restaurant_submission_button" layoutX="453.0" layoutY="428.0" mnemonicParsing="false" onAction="#updateRestaurantDetails" text="EDIT" />
+                                         </children>
+                                     </AnchorPane>
+                                 </content>
+                             </Tab>
+                         </tabs>
+                     </TabPane>
+                 </children>
+             </AnchorPane>
             <AnchorPane fx:id="user_manage_pane" layoutX="475.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <TabPane layoutX="225.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

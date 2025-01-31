@@ -96,6 +96,37 @@ public class AdminHomePage {
 
 
     @FXML
+    private VBox edit_restaurant_scroll_vbox;
+    @FXML
+    private VBox remove_restaurant_vbox;
+
+    @FXML
+    private TextField edit_restaurant_name_txtfield;
+    @FXML
+    private TextField edit_restaurant_city_txtfield;
+    @FXML
+    private TextField edit_restaurant_address_txtfield;
+
+    @FXML
+    private TextField add_restaurant_name_txtfield;
+    @FXML
+    private TextField add_restaurant_city_txtfield;
+    @FXML
+    private TextField add_restaurant_address_txtfield;
+
+    @FXML
+    private Button edit_restaurant_submission_button;
+    @FXML
+    private Button remove_restaurant_button;
+    @FXML
+    private Button add_restaurant_button;
+
+    private RestaurantDAO restaurantDAO = new RestaurantDAO();
+    private int selectedRestaurantId = -1; // For editing
+    private int selectedRestaurantIdToRemove = -1; // For removal
+
+
+    @FXML
     public void initialize() {
         // Set the admin name dynamically
         admin_name.setText("John Doe"); // Replace with actual admin name from the backend
@@ -114,6 +145,18 @@ public class AdminHomePage {
         manage_restaurant_button.setOnAction(event -> toggleManageRestaurants());
         manage_user_button.setOnAction(event -> toggleManageUsers());
         remove_user_button.setOnAction(event -> handleRemoveUser());
+
+
+        // Load initial restaurant data
+        loadRestaurantsIntoEditScrollPane();
+        loadRestaurantsIntoRemoveScrollPane();
+
+        // Event handlers
+        manage_user_button.setOnAction(event -> toggleManageUsers());
+        manage_restaurant_button.setOnAction(event -> toggleManageRestaurants());
+        add_restaurant_button.setOnAction(event -> handleAddRestaurant());
+        remove_restaurant_button.setOnAction(event -> handleRemoveRestaurant());
+        edit_restaurant_submission_button.setOnAction(event -> updateRestaurantDetails());
 
     }
 
@@ -167,13 +210,13 @@ public class AdminHomePage {
      * @param title   The title of the alert.
      * @param message The message to display.
      */
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+//    private void showAlert(String title, String message) {
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle(title);
+//        alert.setHeaderText(null);
+//        alert.setContentText(message);
+//        alert.showAndWait();
+//    }
     /**
      * Populates the role ChoiceBox with the values: Admin, Manager, and User.
      */
@@ -395,5 +438,198 @@ public class AdminHomePage {
 
         // Highlight the selected label
         userLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: #e0e0e0;");
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Loads all non-deleted restaurants into the edit scroll pane.
+     */
+    private void loadRestaurantsIntoEditScrollPane() {
+        List<Restaurant> restaurants = restaurantDAO.getAllRestaurants();
+        edit_restaurant_scroll_vbox.getChildren().clear();
+
+        for (Restaurant restaurant : restaurants) {
+            if (!restaurant.isDeleted()) {
+                Label restaurantLabel = new Label(restaurant.getName() + " - " + restaurant.getCity());
+                restaurantLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: transparent; -fx-cursor: hand;");
+
+                restaurantLabel.setOnMouseEntered(event -> restaurantLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: #c40000;"));
+                restaurantLabel.setOnMouseExited(event -> restaurantLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: transparent;"));
+
+                restaurantLabel.setOnMouseClicked(event -> {
+                    selectedRestaurantId = restaurant.getRestaurantId();
+                    loadRestaurantDetails(restaurant.getRestaurantId());
+                });
+
+                edit_restaurant_scroll_vbox.getChildren().add(restaurantLabel);
+            }
+        }
+    }
+
+    /**
+     * Loads all non-deleted restaurants into the remove scroll pane.
+     */
+    private void loadRestaurantsIntoRemoveScrollPane() {
+        List<Restaurant> restaurants = restaurantDAO.getAllRestaurants();
+        remove_restaurant_vbox.getChildren().clear();
+
+        for (Restaurant restaurant : restaurants) {
+            if (!restaurant.isDeleted()) {
+                Label restaurantLabel = new Label(restaurant.getName() + " - " + restaurant.getCity());
+                restaurantLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: transparent; -fx-cursor: hand;");
+
+                restaurantLabel.setOnMouseEntered(event -> restaurantLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: #c40000;"));
+                restaurantLabel.setOnMouseExited(event -> restaurantLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: transparent;"));
+
+                restaurantLabel.setOnMouseClicked(event -> {
+                    selectedRestaurantIdToRemove = restaurant.getRestaurantId();
+                    highlightSelectedRestaurant(restaurantLabel);
+                });
+
+                remove_restaurant_vbox.getChildren().add(restaurantLabel);
+            }
+        }
+    }
+
+    /**
+     * Highlights the selected restaurant in the remove scroll pane.
+     *
+     * @param restaurantLabel The label of the selected restaurant.
+     */
+    private void highlightSelectedRestaurant(Label restaurantLabel) {
+        for (var child : remove_restaurant_vbox.getChildren()) {
+            if (child instanceof Label) {
+                child.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: transparent;");
+            }
+        }
+        restaurantLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5; -fx-background-color: #e0e0e0;");
+    }
+
+    /**
+     * Handles adding a new restaurant.
+     */
+    @FXML
+    private void handleAddRestaurant() {
+        String name = add_restaurant_name_txtfield.getText().trim();
+        String city = add_restaurant_city_txtfield.getText().trim();
+        String address = add_restaurant_address_txtfield.getText().trim();
+
+        if (name.isEmpty() || city.isEmpty() || address.isEmpty()) {
+            showAlert("Error", "All fields must be filled.");
+            return;
+        }
+
+        Restaurant newRestaurant = new Restaurant(0, name, null, 0.0, city, address, null, false);
+        boolean success = restaurantDAO.addRestaurant(newRestaurant);
+
+        if (success) {
+            showAlert("Success", "Restaurant added successfully.");
+            clearAddRestaurantFields();
+            loadRestaurantsIntoEditScrollPane();
+            loadRestaurantsIntoRemoveScrollPane();
+        } else {
+            showAlert("Error", "Failed to add restaurant.");
+        }
+    }
+
+    /**
+     * Clears the fields for adding a new restaurant.
+     */
+    private void clearAddRestaurantFields() {
+        add_restaurant_name_txtfield.clear();
+        add_restaurant_city_txtfield.clear();
+        add_restaurant_address_txtfield.clear();
+    }
+
+    /**
+     * Updates the details of the selected restaurant.
+     */
+    @FXML
+    private void updateRestaurantDetails() {
+        if (selectedRestaurantId == -1) {
+            showAlert("Error", "No restaurant selected for editing.");
+            return;
+        }
+
+        String newName = edit_restaurant_name_txtfield.getText().trim();
+        String newCity = edit_restaurant_city_txtfield.getText().trim();
+        String newAddress = edit_restaurant_address_txtfield.getText().trim();
+
+        if (newName.isEmpty() || newCity.isEmpty() || newAddress.isEmpty()) {
+            showAlert("Error", "All fields must be filled.");
+            return;
+        }
+
+        boolean nameUpdated = restaurantDAO.updateRestaurant(String.valueOf(selectedRestaurantId), "Name", newName);
+        boolean cityUpdated = restaurantDAO.updateRestaurant(String.valueOf(selectedRestaurantId), "City", newCity);
+        boolean addressUpdated = restaurantDAO.updateRestaurant(String.valueOf(selectedRestaurantId), "Address", newAddress);
+
+        if (nameUpdated && cityUpdated && addressUpdated) {
+            showAlert("Success", "Restaurant updated successfully.");
+            loadRestaurantsIntoEditScrollPane();
+        } else {
+            showAlert("Error", "Failed to update restaurant.");
+        }
+    }
+
+    /**
+     * Handles removing a restaurant (soft delete).
+     */
+    private void handleRemoveRestaurant() {
+        if (selectedRestaurantIdToRemove == -1) {
+            showAlert("Error", "No restaurant selected for removal.");
+            return;
+        }
+
+        boolean success = restaurantDAO.removeRestaurant(selectedRestaurantIdToRemove);
+
+        if (success) {
+            showAlert("Success", "Restaurant removed successfully.");
+            loadRestaurantsIntoRemoveScrollPane();
+            loadRestaurantsIntoEditScrollPane();
+        } else {
+            showAlert("Error", "Failed to remove restaurant.");
+        }
+    }
+
+    /**
+     * Displays an alert dialog.
+     *
+     * @param title   The title of the alert.
+     * @param message The message to display.
+     */
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    /**
+     * Loads restaurant details into the editing fields.
+     *
+     * @param restaurantId The ID of the restaurant to load.
+     */
+    private void loadRestaurantDetails(int restaurantId) {
+        Restaurant restaurant = restaurantDAO.getRestaurantById(restaurantId);
+        if (restaurant != null) {
+            edit_restaurant_name_txtfield.setText(restaurant.getName());
+            edit_restaurant_city_txtfield.setText(restaurant.getCity());
+            edit_restaurant_address_txtfield.setText(restaurant.getAddress());
+        } else {
+            edit_restaurant_name_txtfield.clear();
+            edit_restaurant_city_txtfield.clear();
+            edit_restaurant_address_txtfield.clear();
+        }
     }
 }
