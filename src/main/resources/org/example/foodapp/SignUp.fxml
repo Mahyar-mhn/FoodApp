@@ -5,34 +5,43 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="600.0" prefWidth="650.0" stylesheets="@CssFiles/SignUp.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.SignUp">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #638C6D;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.SignUp">
     <children>
-        <!-- Background Box -->
-        <AnchorPane layoutX="75.0" layoutY="100.0" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: linear-gradient(to bottom, #f9f9f9, #e6e6e6); -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.5, 0, 5);">
+        <!-- Centered Content Box -->
+        <VBox alignment="CENTER" layoutX="200.0" layoutY="50.0" prefHeight="400.0" prefWidth="500.0" spacing="20.0" style="-fx-background-color: #E7FBB4;                      -fx-border-color: #DF6D2D;                      -fx-border-width: 3;                      -fx-border-radius: 15;                      -fx-background-radius: 15;                      -fx-effect: dropshadow(gaussian, #C84C05, 15, 0.5, 0, 5);                      -fx-padding: 30;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
             <children>
                 <!-- Title -->
-                <Label layoutX="150.0" layoutY="20.0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #333;" text="Sign Up" />
+                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #638C6D;" text="Create Your Account" />
 
                 <!-- Name Field -->
-                <Label layoutX="50.0" layoutY="80.0" style="-fx-font-size: 14px; -fx-text-fill: #555;" text="Name:" />
-                <TextField fx:id="name_txtfield" layoutX="150.0" layoutY="75.0" prefWidth="250.0" style="-fx-border-color: #ccc; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 5px;" />
+                <VBox spacing="5.0">
+                    <Label style="-fx-font-size: 14px; -fx-text-fill: #555;" text="Name:" />
+                    <TextField fx:id="name_txtfield" promptText="Enter your name" style="-fx-border-color: #C84C05;                                       -fx-border-radius: 10;                                       -fx-background-radius: 10;                                       -fx-background-color: #DF6D2D;                                       -fx-text-fill: white;                                       -fx-padding: 10;                                       -fx-font-size: 14px;" />
+                </VBox>
 
                 <!-- Phone Field -->
-                <Label layoutX="50.0" layoutY="140.0" style="-fx-font-size: 14px; -fx-text-fill: #555;" text="Phone:" />
-                <TextField fx:id="phone_txtfield" layoutX="150.0" layoutY="135.0" prefWidth="250.0" style="-fx-border-color: #ccc; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 5px;" />
+                <VBox spacing="5.0">
+                    <Label style="-fx-font-size: 14px; -fx-text-fill: #555;" text="Phone:" />
+                    <TextField fx:id="phone_txtfield" promptText="Enter your phone number" style="-fx-border-color: #C84C05;                                       -fx-border-radius: 10;                                       -fx-background-radius: 10;                                       -fx-background-color: #DF6D2D;                                       -fx-text-fill: white;                                       -fx-padding: 10;                                       -fx-font-size: 14px;" />
+                </VBox>
 
                 <!-- Password Field -->
-                <Label layoutX="50.0" layoutY="200.0" style="-fx-font-size: 14px; -fx-text-fill: #555;" text="Password:" />
-                <PasswordField fx:id="password_txtfield" layoutX="150.0" layoutY="195.0" prefWidth="250.0" style="-fx-border-color: #ccc; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 5px;" />
+                <VBox spacing="5.0">
+                    <Label style="-fx-font-size: 14px; -fx-text-fill: #555;" text="Password:" />
+                    <PasswordField fx:id="password_txtfield" promptText="Enter your password" style="-fx-border-color: #C84C05;                                           -fx-border-radius: 10;                                           -fx-background-radius: 10;                                           -fx-background-color: #DF6D2D;                                           -fx-text-fill: white;                                           -fx-padding: 10;                                           -fx-font-size: 14px;" />
+                </VBox>
 
                 <!-- Confirm Password Field -->
-                <Label layoutX="50.0" layoutY="260.0" style="-fx-font-size: 14px; -fx-text-fill: #555;" text="Confirm Password:" />
-                <PasswordField fx:id="confirm_password_txtfield" layoutX="150.0" layoutY="255.0" prefWidth="250.0" style="-fx-border-color: #ccc; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 5px;" />
+                <VBox spacing="5.0">
+                    <Label style="-fx-font-size: 14px; -fx-text-fill: #555;" text="Confirm Password:" />
+                    <PasswordField fx:id="confirm_password_txtfield" promptText="Confirm your password" style="-fx-border-color: #C84C05;                                           -fx-border-radius: 10;                                           -fx-background-radius: 10;                                           -fx-background-color: #DF6D2D;                                           -fx-text-fill: white;                                           -fx-padding: 10;                                           -fx-font-size: 14px;" />
+                </VBox>
 
-                <!-- Sign-Up Button -->
-                <Button fx:id="signup_button" layoutX="180.0" layoutY="320.0" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); -fx-text-fill: white;                                -fx-font-size: 16px; -fx-font-weight: bold; -fx-border-radius: 22px; -fx-background-radius: 22px;                                -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0.5, 0, 3);" text="Sign Up" />
+                <!-- Sign Up Button -->
+                <Button fx:id="signup_button" prefWidth="200.0" style="-fx-background-color: #638C6D;                                -fx-text-fill: white;                                -fx-font-size: 16px;                                -fx-font-weight: bold;                                -fx-border-radius: 20;                                -fx-background-radius: 20;                                -fx-padding: 10;                                -fx-effect: dropshadow(gaussian, #C84C05, 10, 0.3, 0, 4);" text="Sign Up" />
             </children>
-        </AnchorPane>
+        </VBox>
     </children>
 </AnchorPane>

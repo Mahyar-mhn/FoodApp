@@ -957,6 +957,7 @@ public class AdminHomePage {
                 alertButton.setOnAction(event -> {
                     handleCalculateTotalPrice(orderId);
                 });
+
                 orderBox.getChildren().addAll(orderLabel, detailsBox, alertButton);
 
                 // Add click event for the order box to reorder
