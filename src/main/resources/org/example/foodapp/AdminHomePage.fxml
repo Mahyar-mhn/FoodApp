@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -32,9 +33,10 @@
                   <Separator layoutX="26.0" layoutY="126.0" prefWidth="200.0" AnchorPane.topAnchor="126.0" />
                   <Button fx:id="manage_restaurant_button" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="311.0" mnemonicParsing="false" onAction="#toggleManageRestaurants" prefHeight="30.0" prefWidth="150.0" text="Manage Resturants" textAlignment="CENTER" />
                   <Button fx:id="manage_user_button" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="256.0" mnemonicParsing="false" onAction="#toggleManageUsers" prefHeight="30.0" prefWidth="150.0" text="Manage Users" textAlignment="CENTER" textOverrun="CENTER_WORD_ELLIPSIS" />
+                  <Button fx:id="admin_show_addresses_button" layoutX="51.0" layoutY="368.0" mnemonicParsing="false" onAction="#toggleShowAddressesButton" prefHeight="30.0" prefWidth="150.0" text="show My addresses" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="ordering_pane_admin" layoutX="250.0" layoutY="193.0" prefHeight="600.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="ordering_pane_admin" layoutX="250.0" layoutY="193.0" prefHeight="600.0" prefWidth="650.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label layoutX="27.0" layoutY="21.0" text="What would you eat today?!" AnchorPane.bottomAnchor="543.3333333333333" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
                      <font>
@@ -201,6 +203,23 @@
                         </Tab>
                     </tabs>
                   </TabPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="showAddressesPane" layoutX="475.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ScrollPane layoutX="225.0" layoutY="195.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.topAnchor="80.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="731.0" prefWidth="200.0">
+                           <children>
+                              <VBox fx:id="vbox_admin_addresses" layoutX="42.0" layoutY="8.0" prefHeight="731.3333333333334" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+                  <TextField fx:id="city_txtfield_newAddress" layoutX="470.0" layoutY="96.0" />
+                  <TextArea fx:id="detail_txtArea_newAddress" layoutX="436.0" layoutY="197.0" prefHeight="200.0" prefWidth="200.0" />
+                  <TextField fx:id="coordinate_txtfielad_newAddress" layoutX="487.0" layoutY="444.0" />
+                  <Button layoutX="502.0" layoutY="529.0" mnemonicParsing="false" onAction="#handleAddAdminAddress" text="ADD" />
                </children>
             </AnchorPane>
          </children>

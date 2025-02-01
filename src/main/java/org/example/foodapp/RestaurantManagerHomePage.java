@@ -7,15 +7,13 @@ import DaoClasses.OrderDetailDAO;
 import DaoClasses.RestaurantDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,6 +44,12 @@ public class RestaurantManagerHomePage {
     @FXML
     private VBox vbox_scroll_pane_manager_homePage;
 
+    @FXML
+    private VBox vbox_list_manager_addresses;
+
+    @FXML
+    private Button set_manager_default_address;
+
     private int managerId; // ID of the logged-in manager
     private String managerName;
     private RestaurantDAO restaurantDAO = new RestaurantDAO(); // DAO instance
@@ -55,8 +59,152 @@ public class RestaurantManagerHomePage {
     @FXML
     private HBox hbox_manager_history_orders;
     private OrderDAO orderDAO = new OrderDAO();
+
+
+    @FXML
+    private TextField city_txtfield_newAddress;
+
+    @FXML
+    private TextArea detail_txtArea_newAddress;
+
+    @FXML
+    private TextField coordinate_txtfielad_newAddress;
+    @FXML
+    private void handleAddManagerAddress() {
+        // Get input values from the text fields
+        String city = city_txtfield_newAddress.getText().trim();
+        String addressDetail = detail_txtArea_newAddress.getText().trim();
+        String coordinate = coordinate_txtfielad_newAddress.getText().trim();
+
+        // Validate inputs
+        if (city.isEmpty() || addressDetail.isEmpty() || coordinate.isEmpty()) {
+            showAlert("Error", "All fields (City, Address, and Coordinate) must be filled.");
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall("{CALL AddAddress(?, ?, ?, ?, ?)}")) {
+
+            // Set parameters for the stored procedure
+            callableStatement.setInt(1, managerId); // Set user ID (manager ID)
+            callableStatement.setBoolean(2, false); // DefaultAddress = false (not default initially)
+            callableStatement.setString(3, city); // City
+            callableStatement.setString(4, addressDetail); // Address detail
+            callableStatement.setString(5, coordinate); // Coordinate
+
+            // Execute the procedure
+            callableStatement.execute();
+
+            // Show success message and clear fields
+            showAlert("Success", "New address added successfully.");
+            clearNewAddressFields();
+            loadManagerAddresses(); // Reload addresses to display the new one
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while adding the new address.");
+        }
+    }
+    private void clearNewAddressFields() {
+        city_txtfield_newAddress.clear();
+        detail_txtArea_newAddress.clear();
+        coordinate_txtfielad_newAddress.clear();
+    }
+
     private OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
 
+    @FXML
+    private void loadManagerAddresses() {
+        if (managerId <= 0) { // Ensure managerId is set
+            showAlert("Error", "Manager ID is not valid.");
+            return;
+        }
+
+        vbox_list_manager_addresses.getChildren().clear(); // Clear existing content in the VBox
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall("{CALL GetUserAddresses(?)}")) {
+
+            // Set the manager ID as input for the stored procedure
+            callableStatement.setInt(1, managerId);
+
+            // Execute the stored procedure and get the result set
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                if (!resultSet.isBeforeFirst()) {
+                    // If no addresses are found
+                    Label noAddressesLabel = new Label("No addresses found for this manager.");
+                    noAddressesLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10;");
+                    vbox_list_manager_addresses.getChildren().add(noAddressesLabel);
+                    return;
+                }
+
+                // Loop through the result set and add addresses to the VBox
+                while (resultSet.next()) {
+                    int addressId = resultSet.getInt("AddId");
+                    String city = resultSet.getString("City");
+                    String addressDetail = resultSet.getString("AddressDetail");
+                    boolean isDefault = resultSet.getBoolean("DefaultAddress");
+
+                    // Create a VBox for each address
+                    VBox addressBox = new VBox();
+                    addressBox.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5px; -fx-background-color: #f9f9f9; -fx-spacing: 5;");
+                    addressBox.setPrefWidth(300); // Optional: Set fixed width for each address box
+
+                    // Add address details
+                    Label cityLabel = new Label("City: " + city);
+                    cityLabel.setStyle("-fx-font-size: 14px;");
+
+                    Label addressDetailLabel = new Label("Detail: " + addressDetail);
+                    addressDetailLabel.setStyle("-fx-font-size: 14px;");
+
+                    Label defaultLabel = new Label(isDefault ? "Default: Yes" : "Default: No");
+                    defaultLabel.setStyle(isDefault
+                            ? "-fx-font-size: 14px; -fx-text-fill: green;"
+                            : "-fx-font-size: 14px; -fx-text-fill: red;");
+
+                    Button setDefaultButton = new Button("Set as Default");
+                    setDefaultButton.setOnAction(event -> handleSetDefaultAddress(addressId));
+
+                    // Add elements to the VBox
+                    addressBox.getChildren().addAll(cityLabel, addressDetailLabel, defaultLabel, setDefaultButton);
+
+                    // Add the address VBox to the main VBox
+                    vbox_list_manager_addresses.getChildren().add(addressBox);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while loading manager addresses.");
+        }
+    }
+
+    @FXML
+    private void handleSetDefaultAddress(int addressId) {
+        if (managerId <= 0) {
+            showAlert("Error", "Manager ID is not valid.");
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall("{CALL SetDefaultAddress(?, ?)}")) {
+
+            // Set the input parameters for the stored procedure
+            callableStatement.setInt(1, managerId);
+            callableStatement.setInt(2, addressId);
+
+            // Execute the procedure
+            callableStatement.execute();
+
+            // Show success message and reload the addresses
+            showAlert("Success", "Default address updated successfully.");
+            loadManagerAddresses();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while setting the default address.");
+        }
+    }
 
 
     /**
@@ -102,6 +250,7 @@ public class RestaurantManagerHomePage {
         loadManagerRestaurants();
         loadManagerOrders();
         showProfilePane();
+        loadManagerAddresses();
     }
 
     @FXML
@@ -309,7 +458,7 @@ public class RestaurantManagerHomePage {
 
             // Get the controller for the restaurant editing page
             ManagerRestaurantEdit controller = loader.getController();
-
+            controller.setCurrentRestaurantId(selectedRestaurantId);
             // Pass the selected restaurant details to the controller
             RestaurantDAO restaurantDAO = new RestaurantDAO();
             Restaurant selectedRestaurant = restaurantDAO.getRestaurantById(selectedRestaurantId);
@@ -377,7 +526,22 @@ public class RestaurantManagerHomePage {
                     detailsBox.getChildren().add(detailLabel);
                 }
 
-                orderBox.getChildren().addAll(orderLabel, detailsBox);
+                // Add button to display an alert for the order
+                Button alertButton = new Button("Show Total Price");
+                alertButton.setStyle("-fx-padding: 5; -fx-background-color: #007bff; -fx-text-fill: white;");
+                alertButton.setOnAction(event -> {
+                    handleCalculateTotalPrice(orderId);
+                });
+
+                // Add click event for the order box to reorder
+                orderBox.setOnMouseClicked(event -> {
+                    reorderSelectedOrder(orderId); // Call the reorder method when clicked
+                });
+
+                // Add components to the order box
+                orderBox.getChildren().addAll(orderLabel, detailsBox, alertButton);
+
+                // Add the order box to the HBox
                 hbox_manager_history_orders.getChildren().add(orderBox);
             }
         } catch (Exception e) {
@@ -385,6 +549,90 @@ public class RestaurantManagerHomePage {
             errorLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10; -fx-text-fill: red;");
             hbox_manager_history_orders.getChildren().add(errorLabel);
             e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleCalculateTotalPrice(int orderId) {
+        // Validate the orderId
+        if (orderId <= 0) {
+            showAlert("Error", "Invalid order selected. Please select a valid order.");
+            return;
+        }
+
+        // Variable to store the total price
+        BigDecimal totalPrice = BigDecimal.ZERO;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall("{CALL CalculateTotalPrice(?, ?)}")) {
+
+            // Set the input parameter (OrderId) and register the output parameter (TotalPrice)
+            callableStatement.setInt(1, orderId);
+            callableStatement.registerOutParameter(2, java.sql.Types.DECIMAL);
+
+            // Execute the stored procedure
+            callableStatement.execute();
+
+            // Retrieve the calculated total price
+            totalPrice = callableStatement.getBigDecimal(2);
+
+            // Show the calculated total price in an alert
+            showAlert("Total Price", "The total price for Order ID " + orderId + " is: $" + totalPrice);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while calculating the total price.");
+        }
+    }
+
+    @FXML
+    private void reorderSelectedOrder(int selectedOrderId) {
+        if (selectedOrderId <= 0) {
+            showAlert("Error", "Invalid order selected. Please select a valid order to reorder.");
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableCreateOrder = connection.prepareCall("{CALL NewOrder(?)}");
+             CallableStatement callableAddOrderDetail = connection.prepareCall("{CALL AddOrderDetail(?, ?, ?)}");
+             CallableStatement callableGetOrderDetails = connection.prepareCall("{CALL GetOrderDetailsByOrderId(?)}")) {
+
+            // Step 1: Create a new order
+            callableCreateOrder.setInt(1, getManagerDefaultAddressId());
+            callableCreateOrder.execute();
+
+            // Retrieve the newly created order ID
+            int newOrderId = -1;
+            try (ResultSet resultSet = connection.createStatement().executeQuery("SELECT LAST_INSERT_ID() AS OrderId")) {
+                if (resultSet.next()) {
+                    newOrderId = resultSet.getInt("OrderId");
+                }
+            }
+
+            if (newOrderId == -1) {
+                showAlert("Error", "Failed to create a new order.");
+                return;
+            }
+
+            // Step 2: Fetch the items from the selected order
+            callableGetOrderDetails.setInt(1, selectedOrderId);
+            try (ResultSet orderDetailsResult = callableGetOrderDetails.executeQuery()) {
+                while (orderDetailsResult.next()) {
+                    int itemId = orderDetailsResult.getInt("ItemId");
+                    int quantity = orderDetailsResult.getInt("Quantity");
+
+                    // Step 3: Add each item to the new order
+                    callableAddOrderDetail.setInt(1, newOrderId);
+                    callableAddOrderDetail.setInt(2, itemId);
+                    callableAddOrderDetail.setInt(3, quantity);
+                    callableAddOrderDetail.execute();
+                }
+            }
+
+            showAlert("Success", "Reorder successful! Your new Order ID is: " + newOrderId);
+            loadManagerOrders();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while reordering.");
         }
     }
 

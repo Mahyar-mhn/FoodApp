@@ -8,11 +8,12 @@ import DaoClasses.OrderDetailDAO;
 import DaoClasses.RestaurantDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -29,6 +30,11 @@ public class CustomerHomePage {
     private AnchorPane main_pane_customerPage;
 
     @FXML
+    private AnchorPane Customer_homePage_pane;
+    @FXML
+    private AnchorPane Customer_addresses_pane;
+
+    @FXML
     private AnchorPane scroll_pane_customer_homePage;
 
     @FXML
@@ -37,10 +43,184 @@ public class CustomerHomePage {
     @FXML
     private VBox vbox_customer_orders;
 
+    @FXML
+    private VBox vbox_customer_addresses;
+
+    @FXML
+    private TextField city_txtfield_newAddress;
+
+    @FXML
+    private TextArea detail_txtArea_newAddress;
+
+    @FXML
+    private TextField coordinate_txtfielad_newAddress;
+
+    @FXML
+    private void handleAddCustomerAddress() {
+        // Get input values from the text fields
+        String city = city_txtfield_newAddress.getText().trim();
+        String addressDetail = detail_txtArea_newAddress.getText().trim();
+        String coordinate = coordinate_txtfielad_newAddress.getText().trim();
+
+        // Validate inputs
+        if (city.isEmpty() || addressDetail.isEmpty() || coordinate.isEmpty()) {
+            showAlert("Error", "All fields (City, Address, and Coordinate) must be filled.");
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall("{CALL AddAddress(?, ?, ?, ?, ?)}")) {
+
+            // Set parameters for the stored procedure
+            callableStatement.setInt(1, customerId); // Set user ID (customer ID)
+            callableStatement.setBoolean(2, false); // DefaultAddress = false (not default initially)
+            callableStatement.setString(3, city); // City
+            callableStatement.setString(4, addressDetail); // Address detail
+            callableStatement.setString(5, coordinate); // Coordinate
+
+            // Execute the procedure
+            callableStatement.execute();
+
+            // Show success message and clear fields
+            showAlert("Success", "New address added successfully.");
+            clearNewAddressFields();
+            loadCustomerAddresses(); // Reload addresses to display the new one
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while adding the new address.");
+        }
+    }
+
+    private void clearNewAddressFields() {
+        city_txtfield_newAddress.clear();
+        detail_txtArea_newAddress.clear();
+        coordinate_txtfielad_newAddress.clear();
+    }
+
+
+    @FXML
+    private void loadCustomerAddresses() {
+        if (customerId <= 0) { // Ensure customerId is set
+            showAlert("Error", "Customer ID is not valid.");
+            return;
+        }
+
+        vbox_customer_addresses.getChildren().clear(); // Clear existing content in the VBox
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall("{CALL GetUserAddresses(?)}")) {
+
+            // Set the customer ID as input for the stored procedure
+            callableStatement.setInt(1, customerId);
+
+            // Execute the stored procedure and get the result set
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                if (!resultSet.isBeforeFirst()) {
+                    // If no addresses are found
+                    Label noAddressesLabel = new Label("No addresses found for this customer.");
+                    noAddressesLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10;");
+                    vbox_customer_addresses.getChildren().add(noAddressesLabel);
+                    return;
+                }
+
+                // Loop through the result set and add addresses to the VBox
+                while (resultSet.next()) {
+                    int addressId = resultSet.getInt("AddId");
+                    String city = resultSet.getString("City");
+                    String addressDetail = resultSet.getString("AddressDetail");
+                    boolean isDefault = resultSet.getBoolean("DefaultAddress");
+
+                    // Create a VBox for each address
+                    VBox addressBox = new VBox();
+                    addressBox.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5px; -fx-background-color: #f9f9f9; -fx-spacing: 5;");
+                    addressBox.setPrefWidth(300); // Optional: Set fixed width for each address box
+
+                    // Add address details
+                    Label cityLabel = new Label("City: " + city);
+                    cityLabel.setStyle("-fx-font-size: 14px;");
+
+                    Label addressDetailLabel = new Label("Detail: " + addressDetail);
+                    addressDetailLabel.setStyle("-fx-font-size: 14px;");
+
+                    Label defaultLabel = new Label(isDefault ? "Default: Yes" : "Default: No");
+                    defaultLabel.setStyle(isDefault
+                            ? "-fx-font-size: 14px; -fx-text-fill: green;"
+                            : "-fx-font-size: 14px; -fx-text-fill: red;");
+
+                    Button setDefaultButton = new Button("Set as Default");
+                    setDefaultButton.setOnAction(event -> handleSetCustomerDefaultAddress(addressId));
+
+                    // Add elements to the VBox
+                    addressBox.getChildren().addAll(cityLabel, addressDetailLabel, defaultLabel, setDefaultButton);
+
+                    // Add the address VBox to the main VBox
+                    vbox_customer_addresses.getChildren().add(addressBox);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while loading customer addresses.");
+        }
+    }
+    @FXML
+    private void handleSetCustomerDefaultAddress(int addressId) {
+        if (customerId <= 0) {
+            showAlert("Error", "Customer ID is not valid.");
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall("{CALL SetDefaultAddress(?, ?)}")) {
+
+            // Set the input parameters for the stored procedure
+            callableStatement.setInt(1, customerId);
+            callableStatement.setInt(2, addressId);
+
+            // Execute the procedure
+            callableStatement.execute();
+
+            // Show success message and reload the addresses
+            showAlert("Success", "Default address updated successfully.");
+            loadCustomerAddresses();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while setting the default address.");
+        }
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
+    @FXML
+    private Button customer_show_addresses_button;
+
+
     private OrderDAO orderDAO = new OrderDAO();
     private OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
     private int customerId; // ID of the logged-in customer
 
+    @FXML
+    private void toggleShowCustomerButton() {
+        if ("Home Page".equals(customer_show_addresses_button.getText())) {
+            showProfilePane(); // Go back to the home page
+        } else {
+            Customer_homePage_pane.setVisible(false);
+
+            Customer_addresses_pane.setVisible(true);
+            loadCustomerAddresses();
+
+            customer_show_addresses_button.setText("Home Page");
+
+        }
+    }
 
     public void setCustomerData(int customerId, String customerName) {
         this.customerId = customerId;
@@ -90,6 +270,10 @@ public class CustomerHomePage {
 
     @FXML
     public void showProfilePane() {
+        Customer_homePage_pane.setVisible(true);
+        Customer_addresses_pane.setVisible(false);
+
+        customer_show_addresses_button.setText("Show My address");
         // Clear existing content in the VBox
         vbox_scroll_pane_customer_homePage.getChildren().clear();
 
@@ -168,8 +352,63 @@ public class CustomerHomePage {
         }
     }
 
+//    public void loadCustomerOrders() {
+//        // Clear existing VBox orders
+//        vbox_customer_orders.getChildren().clear();
+//
+//        try {
+//            // Fetch the customer's order details from the database
+//            List<OrderDetail> customerOrderDetails = orderDAO.getUserOrderHistory(customerId);
+//
+//            if (customerOrderDetails.isEmpty()) {
+//                Label noOrdersLabel = new Label("No orders available.");
+//                noOrdersLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10;");
+//                vbox_customer_orders.getChildren().add(noOrdersLabel);
+//                return;
+//            }
+//
+//            // Group order details by OrderId
+//            Map<Integer, List<OrderDetail>> ordersGroupedByOrderId = customerOrderDetails.stream()
+//                    .collect(Collectors.groupingBy(OrderDetail::getOrderId));
+//
+//            // Display grouped orders in the VBox
+//            for (Map.Entry<Integer, List<OrderDetail>> entry : ordersGroupedByOrderId.entrySet()) {
+//                int orderId = entry.getKey();
+//                List<OrderDetail> orderDetails = entry.getValue();
+//
+//                VBox orderBox = new VBox();
+//                orderBox.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5px; -fx-background-color: #f9f9f9; -fx-spacing: 5;");
+//
+//                // Add order details (Order ID)
+//                Label orderLabel = new Label("Order ID: " + orderId);
+//                orderLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+//
+//                VBox detailsBox = new VBox();
+//                detailsBox.setStyle("-fx-spacing: 5; -fx-padding: 5;");
+//
+//                for (OrderDetail detail : orderDetails) {
+//                    Label detailLabel = new Label(
+//                            "Item ID: " + detail.getItemId() +
+//                                    ", Quantity: " + detail.getCount() +
+//                                    ", Price: $" + detail.getPrice() +
+//                                    ", Total: $" + detail.calculateTotal()
+//                    );
+//                    detailLabel.setStyle("-fx-font-size: 14px;");
+//                    detailsBox.getChildren().add(detailLabel);
+//                }
+//
+//                orderBox.getChildren().addAll(orderLabel, detailsBox);
+//                vbox_customer_orders.getChildren().add(orderBox);
+//            }
+//        } catch (Exception e) {
+//            Label errorLabel = new Label("Failed to load orders. Please try again.");
+//            errorLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10; -fx-text-fill: red;");
+//            vbox_customer_orders.getChildren().add(errorLabel);
+//            e.printStackTrace();
+//        }
+//    }
     public void loadCustomerOrders() {
-        // Clear existing VBox orders
+    // Clear existing VBox orders
         vbox_customer_orders.getChildren().clear();
 
         try {
@@ -213,7 +452,20 @@ public class CustomerHomePage {
                     detailsBox.getChildren().add(detailLabel);
                 }
 
-                orderBox.getChildren().addAll(orderLabel, detailsBox);
+                // Add button to display an alert for the order
+                Button alertButton = new Button("Show Total Price");
+                alertButton.setStyle("-fx-padding: 5; -fx-background-color: #007bff; -fx-text-fill: white;");
+                alertButton.setOnAction(event -> {
+                    handleCalculateTotalPrice(orderId);
+                });
+                orderBox.getChildren().addAll(orderLabel, detailsBox, alertButton);
+
+
+                // Add click event for the order box to reorder
+                orderBox.setOnMouseClicked(event -> {
+                    reorderSelectedOrder(orderId); // Call the reorder method when clicked
+                });
+
                 vbox_customer_orders.getChildren().add(orderBox);
             }
         } catch (Exception e) {
@@ -221,6 +473,89 @@ public class CustomerHomePage {
             errorLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10; -fx-text-fill: red;");
             vbox_customer_orders.getChildren().add(errorLabel);
             e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleCalculateTotalPrice(int orderId) {
+        // Validate the orderId
+        if (orderId <= 0) {
+            showAlert("Error", "Invalid order selected. Please select a valid order.");
+            return;
+        }
+
+        // Variable to store the total price
+        BigDecimal totalPrice = BigDecimal.ZERO;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableStatement = connection.prepareCall("{CALL CalculateTotalPrice(?, ?)}")) {
+
+            // Set the input parameter (OrderId) and register the output parameter (TotalPrice)
+            callableStatement.setInt(1, orderId);
+            callableStatement.registerOutParameter(2, java.sql.Types.DECIMAL);
+
+            // Execute the stored procedure
+            callableStatement.execute();
+
+            // Retrieve the calculated total price
+            totalPrice = callableStatement.getBigDecimal(2);
+
+            // Show the calculated total price in an alert
+            showAlert("Total Price", "The total price for Order ID " + orderId + " is: $" + totalPrice);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while calculating the total price.");
+        }
+    }
+    @FXML
+    private void reorderSelectedOrder(int selectedOrderId) {
+        if (selectedOrderId <= 0) {
+            showAlert("Error", "Invalid order selected. Please select a valid order to reorder.");
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             CallableStatement callableCreateOrder = connection.prepareCall("{CALL NewOrder(?)}");
+             CallableStatement callableAddOrderDetail = connection.prepareCall("{CALL AddOrderDetail(?, ?, ?)}");
+             CallableStatement callableGetOrderDetails = connection.prepareCall("{CALL GetOrderDetailsByOrderId(?)}")) {
+
+            // Step 1: Create a new order
+            callableCreateOrder.setInt(1, getCustomerDefaultAddressId());
+            callableCreateOrder.execute();
+
+            // Retrieve the newly created order ID
+            int newOrderId = -1;
+            try (ResultSet resultSet = connection.createStatement().executeQuery("SELECT LAST_INSERT_ID() AS OrderId")) {
+                if (resultSet.next()) {
+                    newOrderId = resultSet.getInt("OrderId");
+                }
+            }
+
+            if (newOrderId == -1) {
+                showAlert("Error", "Failed to create a new order.");
+                return;
+            }
+
+            // Step 2: Fetch the items from the selected order
+            callableGetOrderDetails.setInt(1, selectedOrderId);
+            try (ResultSet orderDetailsResult = callableGetOrderDetails.executeQuery()) {
+                while (orderDetailsResult.next()) {
+                    int itemId = orderDetailsResult.getInt("ItemId");
+                    int quantity = orderDetailsResult.getInt("Quantity");
+
+                    // Step 3: Add each item to the new order
+                    callableAddOrderDetail.setInt(1, newOrderId);
+                    callableAddOrderDetail.setInt(2, itemId);
+                    callableAddOrderDetail.setInt(3, quantity);
+                    callableAddOrderDetail.execute();
+                }
+            }
+
+            showAlert("Success", "Reorder successful! Your new Order ID is: " + newOrderId);
+            loadCustomerOrders();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "An error occurred while reordering.");
         }
     }
 

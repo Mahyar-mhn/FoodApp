@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -10,69 +14,220 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.example.foodapp.ManagerRestaurantEdit">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.ManagerRestaurantEdit">
     <children>
-      <AnchorPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <TabPane prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="restaurantInfo">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <TabPane prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="restaurantInfo">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <TextField fx:id="restaurant_city_txtfield" layoutX="375.0" layoutY="259.0" promptText="City" />
+                                        <TextField fx:id="restaurant_address_txtfield" layoutX="375.0" layoutY="191.0" promptText="Address" />
+                                        <TextField fx:id="restaurant_name_txtfield" layoutX="375.0" layoutY="130.0" promptText="Restaurant Name" />
+
+                                        <!-- Working Time Management Section -->
+                                        <Label layoutX="50.0" layoutY="120.0" style="-fx-font-size: 18px;" text="Edit Working Time" />
+                                        <ChoiceBox fx:id="working_time_day_combobox" layoutX="111.0" layoutY="155.0" prefWidth="150.0">
+                                            <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                    <String fx:value="Monday" />
+                                                    <String fx:value="Tuesday" />
+                                                    <String fx:value="Wednesday" />
+                                                    <String fx:value="Thursday" />
+                                                    <String fx:value="Friday" />
+                                                    <String fx:value="Saturday" />
+                                                    <String fx:value="Sunday" />
+                                                </FXCollections>
+                                            </items>
+                                        </ChoiceBox>
+                                        <HBox layoutX="111.0" layoutY="191.0" spacing="10.0">
+                                            <ComboBox fx:id="working_time_open_hour_combobox" prefWidth="60.0" promptText="Hour">
+                                                <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                        <String fx:value="00" />
+                                                        <String fx:value="01" />
+                                                        <String fx:value="02" />
+                                                        <String fx:value="03" />
+                                                        <String fx:value="04" />
+                                                        <String fx:value="05" />
+                                                        <String fx:value="06" />
+                                                        <String fx:value="07" />
+                                                        <String fx:value="08" />
+                                                        <String fx:value="09" />
+                                                        <String fx:value="10" />
+                                                        <String fx:value="11" />
+                                                        <String fx:value="12" />
+                                                        <String fx:value="13" />
+                                                        <String fx:value="14" />
+                                                        <String fx:value="15" />
+                                                        <String fx:value="16" />
+                                                        <String fx:value="17" />
+                                                        <String fx:value="18" />
+                                                        <String fx:value="19" />
+                                                        <String fx:value="20" />
+                                                        <String fx:value="21" />
+                                                        <String fx:value="22" />
+                                                        <String fx:value="23" />
+                                                    </FXCollections>
+                                                </items>
+                                            </ComboBox>
+                                            <ComboBox fx:id="working_time_open_minute_combobox" prefWidth="60.0" promptText="Minute">
+                                                <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                        <String fx:value="00" />
+                                                        <String fx:value="15" />
+                                                        <String fx:value="30" />
+                                                        <String fx:value="45" />
+                                                    </FXCollections>
+                                                </items>
+                                            </ComboBox>
+                                        </HBox>
+                                        <HBox layoutX="111.0" layoutY="224.0" spacing="10.0">
+                                            <ComboBox fx:id="working_time_close_hour_combobox" prefWidth="60.0" promptText="Hour">
+                                                <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                        <String fx:value="00" />
+                                                        <String fx:value="01" />
+                                                        <String fx:value="02" />
+                                                        <String fx:value="03" />
+                                                        <String fx:value="04" />
+                                                        <String fx:value="05" />
+                                                        <String fx:value="06" />
+                                                        <String fx:value="07" />
+                                                        <String fx:value="08" />
+                                                        <String fx:value="09" />
+                                                        <String fx:value="10" />
+                                                        <String fx:value="11" />
+                                                        <String fx:value="12" />
+                                                        <String fx:value="13" />
+                                                        <String fx:value="14" />
+                                                        <String fx:value="15" />
+                                                        <String fx:value="16" />
+                                                        <String fx:value="17" />
+                                                        <String fx:value="18" />
+                                                        <String fx:value="19" />
+                                                        <String fx:value="20" />
+                                                        <String fx:value="21" />
+                                                        <String fx:value="22" />
+                                                        <String fx:value="23" />
+                                                    </FXCollections>
+                                                </items>
+                                            </ComboBox>
+                                            <ComboBox fx:id="working_time_close_minute_combobox" prefWidth="60.0" promptText="Minute">
+                                                <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                        <String fx:value="00" />
+                                                        <String fx:value="15" />
+                                                        <String fx:value="30" />
+                                                        <String fx:value="45" />
+                                                    </FXCollections>
+                                                </items>
+                                            </ComboBox>
+                                        </HBox>
+                                        <Button fx:id="edit_restaurant_time" layoutX="160.0" layoutY="328.0" mnemonicParsing="false" onAction="#handleEditWorkingTime" text="Edit Working Time" />
+
+                                        <Button layoutX="498.0" layoutY="400.0" onAction="#handleCancel" text="Cancel" />
+                                        <Button layoutX="375.0" layoutY="400.0" onAction="#handleSaveChanges" text="Save Changes" />
+                              <TextField fx:id="deliverydee_txtfield" layoutX="685.0" layoutY="191.0" promptText="deliveryfee" />
+                              <Button fx:id="update_fee" layoutX="723.0" layoutY="246.0" mnemonicParsing="false" onAction="#handleUpdateDeliveryFee" text="update fee" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="itemInfo">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <ScrollPane layoutX="350.0" layoutY="98.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="85.0">
+                                            <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="848.0">
+                                                    <children>
+                                                        <HBox fx:id="hbox_item_scrol_pane" layoutX="14.0" layoutY="50.0" prefHeight="200.0" prefWidth="848.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </ScrollPane>
+                                        <Label layoutX="20.0" layoutY="48.0" text="Items" AnchorPane.topAnchor="40.0">
+                                            <font>
+                                                <Font size="24.0" />
+                                            </font>
+                                        </Label>
+                                        <Button fx:id="delete_item_button" layoutX="167.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleDeleteItem" prefWidth="100.0" text="Delete" />
+                                        <TextField fx:id="item_name_txtfield" layoutX="565.0" layoutY="315.0" promptText="name" />
+                                        <TextField fx:id="item_price_txtfield" layoutX="565.0" layoutY="361.0" promptText="price" />
+                                        <TextField fx:id="item_photo_txtfield" layoutX="565.0" layoutY="403.0" promptText="photo" />
+                                        <TextField fx:id="item_detail_txtfield" layoutX="565.0" layoutY="446.0" promptText="detail" />
+                                        <Button fx:id="edit_item_button" layoutX="621.0" layoutY="498.0" mnemonicParsing="false" onAction="#handleEditItem" text="Edit" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="insertItem">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <TextField fx:id="new_item_name_txtfield" layoutX="376.0" layoutY="122.0" promptText="new item name" />
+                                        <TextField fx:id="new_item_price_txtfield" layoutX="376.0" layoutY="168.0" promptText="new item price" />
+                                        <TextField fx:id="new_item_photo_txtfield" layoutX="376.0" layoutY="219.0" promptText="new item photo" />
+                                        <TextField fx:id="new_item_detail_txtfield" layoutX="376.0" layoutY="273.0" promptText="new item detail" />
+                                        <Button fx:id="add_item_button" layoutX="430.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleAddItem" text="ADD" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                  <Tab text="Pending Orders">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                                <TextField fx:id="restaurant_city_txtfield" layoutX="375.0" layoutY="259.0" promptText="City" />
-                                <TextField fx:id="restaurant_address_txtfield" layoutX="375.0" layoutY="191.0" promptText="Address" />
-                                <Button layoutX="498.0" layoutY="361.0" onAction="#handleCancel" text="Cancel" />
-                                <Button layoutX="375.0" layoutY="361.0" onAction="#handleSaveChanges" text="Save Changes" />
-                                <TextField fx:id="restaurant_name_txtfield" layoutX="375.0" layoutY="130.0" promptText="Restaurant Name" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab text="itemInfo">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <ScrollPane layoutX="350.0" layoutY="98.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="85.0">
+                              <ScrollPane layoutX="324.0" layoutY="185.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="85.0">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="848.0">
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="1021.0">
                                        <children>
-                                          <HBox fx:id="hbox_item_scrol_pane" layoutX="14.0" layoutY="50.0" prefHeight="200.0" prefWidth="848.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <HBox fx:id="hbox_pendingOrders" layoutX="185.0" layoutY="33.0" prefHeight="200.0" prefWidth="1021.3333333333334" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                 </content>
                               </ScrollPane>
-                              <Label layoutX="20.0" layoutY="48.0" text="Items" AnchorPane.topAnchor="40.0">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="delete_item_button" layoutX="167.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleDeleteItem" prefWidth="100.0" text="Delete" />
-                              <TextField fx:id="item_name_txtfield" layoutX="565.0" layoutY="315.0" promptText="name" />
-                              <TextField fx:id="item_price_txtfield" layoutX="565.0" layoutY="361.0" promptText="price" />
-                              <TextField fx:id="item_photo_txtfield" layoutX="565.0" layoutY="403.0" promptText="photo" />
-                              <TextField fx:id="item_detail_txtfield" layoutX="565.0" layoutY="446.0" promptText="detail" />
-                              <Button fx:id="edit_item_button" layoutX="621.0" layoutY="498.0" mnemonicParsing="false" onAction="#handleEditItem" text="Edit" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                  <Tab text="insertItem">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TextField fx:id="new_item_name_txtfield" layoutX="376.0" layoutY="122.0" promptText="new item name" />
-                              <TextField fx:id="new_item_price_txtfield" layoutX="376.0" layoutY="168.0" promptText="new item price" />
-                              <TextField fx:id="new_item_photo_txtfield" layoutX="376.0" layoutY="219.0" promptText="new item photo" />
-                              <TextField fx:id="new_item_detail_txtfield" layoutX="376.0" layoutY="273.0" promptText="new item detail" />
-                              <Button fx:id="add_item_button" layoutX="430.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleAddItem" text="ADD" />
+                              <Button fx:id="update_order_status_button" layoutX="85.0" layoutY="384.0" mnemonicParsing="false" onAction="#handleUpdateOrderStatus" text="approve" />
+                              <Button fx:id="reject_notapproved_orders" layoutX="464.0" layoutY="384.0" mnemonicParsing="false" onAction="#handleRejectOrder" text="reject" />
+                               <ChoiceBox fx:id="order_status_choicebox" layoutX="181.0" layoutY="384.0" prefWidth="150.0">
+                                   <items>
+                                       <FXCollections fx:factory="observableArrayList">
+                                           <String fx:value="Not Approved" />
+                                           <String fx:value="Reject" />
+                                           <String fx:value="Pending" />
+                                           <String fx:value="Done" />
+                                           <String fx:value="Cancelled" />
+                                       </FXCollections>
+                                   </items>
+                               </ChoiceBox>
                            </children>
                         </AnchorPane>
                     </content>
                   </Tab>
-              </tabs>
-            </TabPane>
-         </children>
-      </AnchorPane>
+                  <Tab text="order hostory">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ScrollPane layoutX="350.0" layoutY="153.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="85.0">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="1072.0">
+                                       <children>
+                                          <HBox fx:id="hbox_manager_order_history" layoutX="49.0" layoutY="50.0" prefHeight="200.0" prefWidth="1072.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                    </tabs>
+                </TabPane>
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>
