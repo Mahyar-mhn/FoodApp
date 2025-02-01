@@ -1,0 +1,157 @@
+/* General button style */
+.button-primary {
+    -fx-background-color: #638C6D; /* Background color */
+    -fx-text-fill: white; /* Text color */
+    -fx-font-size: 12px; /* Font size */
+    -fx-border-radius: 10; /* Rounded border */
+    -fx-background-radius: 10; /* Rounded background */
+    -fx-effect: dropshadow(gaussian, #C84C05, 10, 0.3, 0, 4); /* Shadow effect */
+}
+
+/* Button hover effect */
+.button-primary:hover {
+    -fx-background-color: #77A181; /* Lighter green when hovered */
+    -fx-effect: dropshadow(gaussian, #9A4A03, 12, 0.5, 0, 6); /* Stronger shadow */
+}
+
+/* Button pressed effect */
+.button-primary:pressed {
+    -fx-background-color: #507C5A; /* Darker green when pressed */
+    -fx-effect: none; /* Remove shadow */
+}
+
+/* General text field style */
+.text-field-primary {
+    -fx-font-size: 16px; /* Font size */
+    -fx-padding: 10; /* Padding inside the text field */
+    -fx-border-radius: 10; /* Rounded border */
+    -fx-background-radius: 10; /* Rounded background */
+    -fx-background-color: #DF6D2D; /* Background color */
+    -fx-text-fill: white; /* Text color */
+    -fx-border-color: #C84C05; /* Border color */
+}
+
+/* Text field focus effect */
+.text-field-primary:focused {
+    -fx-background-color: #F07A3E; /* Lighter orange when focused */
+    -fx-border-color: #9A4A03; /* Darker border when focused */
+}
+
+/* Text field hover effect */
+.text-field-primary:hover {
+    -fx-background-color: #E76C2A; /* Slightly lighter orange when hovered */
+    -fx-border-color: #9A4A03; /* Border color on hover */
+}
+
+/* General label style */
+.label-primary {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-text-fill: #638C6D; /* Green text */
+    -fx-underline: true; /* Underline text */
+}
+
+/* Label hover effect */
+.label-primary:hover {
+    -fx-text-fill: #507C5A; /* Darker green when hovered */
+}
+
+/* Light background color for main panes */
+.pane-light {
+    -fx-background-color: #F9F9F9; /* Soft white-grey */
+    -fx-border-radius: 10; /* Rounded border */
+    -fx-background-radius: 10; /* Rounded corners */
+    -fx-padding: 15; /* Internal padding */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0.5, 0, 4); /* Subtle shadow */
+}
+
+/* Alternative light background for contrast */
+.pane-light-alt {
+    -fx-background-color: #E7EAEF; /* Light pastel blue */
+    -fx-border-radius: 10; /* Rounded border */
+    -fx-background-radius: 10; /* Rounded corners */
+    -fx-padding: 15; /* Internal padding */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0.5, 0, 4); /* Subtle shadow */
+}
+
+/* Pane hover effect */
+.pane-light:hover, .pane-light-alt:hover {
+    -fx-background-color: #FFFFFF; /* Slightly brighter on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.6, 0, 6); /* Slightly stronger shadow */
+}
+
+/* Title label inside panes */
+.pane-title {
+    -fx-font-size: 20px; /* Title font size */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-text-fill: #6A040F; /* Deep red text color for contrast */
+    -fx-padding: 10 0 20 0; /* Spacing around the title */
+}
+
+/* Subtle separator styling */
+.separator-light {
+    -fx-background-color: #C8D8E4; /* Light grey-blue */
+    -fx-padding: 5; /* Add spacing */
+    -fx-border-radius: 5; /* Rounded edges */
+}
+
+/* Styled scroll pane */
+.scroll-pane-light {
+    -fx-background-color: #F5F5F5; /* Light grey background for scroll pane */
+    -fx-border-color: #D6D6D6; /* Subtle border */
+    -fx-border-radius: 10; /* Rounded border */
+    -fx-background-radius: 10; /* Rounded corners */
+}
+
+/* Styled VBox */
+.vbox-light {
+    -fx-spacing: 10; /* Space between children */
+    -fx-padding: 15; /* Padding inside */
+    -fx-background-color: #F5F8FA; /* Very light blue */
+    -fx-border-radius: 10; /* Rounded border */
+    -fx-background-radius: 10; /* Rounded corners */
+}
+
+/* Scroll pane with a fresh new look */
+.scroll-pane-fresh {
+    -fx-background-color: #FAF3DD; /* Warm light beige for background */
+    -fx-border-color: #C8A165; /* Golden beige border */
+    -fx-border-radius: 12; /* Smooth rounded corners for border */
+    -fx-background-radius: 12; /* Smooth rounded corners for background */
+    -fx-padding: 8; /* Internal padding for content */
+}
+
+/* Scroll pane hover effect */
+.scroll-pane-fresh:hover {
+    -fx-background-color: #FFF7E0; /* Slightly lighter beige for hover */
+    -fx-border-color: #C8924F; /* Slightly darker golden beige for hover border */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.4, 0, 4); /* Subtle shadow on hover */
+}
+
+/* Scroll bar styling */
+.scroll-pane-fresh .scroll-bar {
+    -fx-background-color: #FFE7C7; /* Light cream background for scroll bar */
+    -fx-border-color: #C8A165; /* Border for scroll bar */
+    -fx-background-radius: 8; /* Rounded background for scroll bar */
+    -fx-border-radius: 8; /* Rounded border for scroll bar */
+}
+
+.scroll-pane-fresh .scroll-bar:hover {
+    -fx-background-color: #FFD69F; /* Highlighted scroll bar background on hover */
+}
+
+/* Thumb (the draggable part of the scroll bar) */
+.scroll-pane-fresh .thumb {
+    -fx-background-color: #C8924F; /* Darker golden beige for the thumb */
+    -fx-background-radius: 8; /* Rounded thumb for smooth look */
+}
+
+.scroll-pane-fresh .thumb:hover {
+    -fx-background-color: #A66F2D; /* Even darker shade for hover effect */
+}
+
+/* Scroll content area within the scroll pane */
+.scroll-pane-fresh .content {
+    -fx-background-color: #FFF9ED; /* Off-white for content area */
+    -fx-padding: 10; /* Padding around content */
+    -fx-border-radius: 12; /* Smooth rounded edges for content area */
+}

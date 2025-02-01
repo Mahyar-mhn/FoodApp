@@ -5,12 +5,44 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.RestaurantCart">
+<AnchorPane prefHeight="150.0" prefWidth="400.0"
+            style="-fx-background-color: #638C6D; /* Dark Green */
+                   -fx-border-color: #C84C05; /* Deep Orange */
+                   -fx-border-width: 3;
+                   -fx-border-radius: 15;
+                   -fx-background-radius: 15;
+                   -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0.4, 0, 6);"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.foodapp.RestaurantCart">
+
    <children>
-      <ImageView fx:id="restaurant_image" fitHeight="100.0" fitWidth="120.0" layoutX="21.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="25.0" />
-      <Label fx:id="restaurant_name" layoutX="239.0" layoutY="61.0" text="ResName" AnchorPane.bottomAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <!-- Restaurant Image -->
+      <ImageView fx:id="restaurant_image"
+                 fitHeight="100.0" fitWidth="120.0"
+                 layoutX="21.0" layoutY="25.0"
+                 pickOnBounds="true" preserveRatio="true"
+                 style="-fx-border-radius: 10;
+                        -fx-background-radius: 10;
+                        -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.3, 0, 2);"
+                 AnchorPane.bottomAnchor="25.0"
+                 AnchorPane.leftAnchor="21.0"
+                 AnchorPane.topAnchor="25.0" />
+
+      <!-- Restaurant Name Label -->
+      <Label fx:id="restaurant_name"
+             layoutX="160.0" layoutY="60.0"
+             text="Restaurant Name"
+             style="-fx-font-size: 20px;
+                    -fx-font-weight: bold;
+                    -fx-text-fill: #DF6D2D; /* Vibrant Orange */
+                    -fx-background-color: #E7FBB4; /* Light Green */
+                    -fx-padding: 5px 15px;
+                    -fx-border-radius: 8;
+                    -fx-background-radius: 8;">
          <font>
-            <Font size="18.0" />
-         </font></Label>
+            <Font size="20.0"/>
+         </font>
+      </Label>
    </children>
 </AnchorPane>

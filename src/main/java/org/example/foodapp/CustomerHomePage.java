@@ -8,9 +8,11 @@ import DaoClasses.OrderDetailDAO;
 import DaoClasses.RestaurantDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -54,6 +56,9 @@ public class CustomerHomePage {
 
     @FXML
     private TextField coordinate_txtfielad_newAddress;
+
+    @FXML
+    private Button customer_backtologin_button;
 
     @FXML
     private void handleAddCustomerAddress() {
@@ -274,6 +279,7 @@ public class CustomerHomePage {
         Customer_addresses_pane.setVisible(false);
 
         customer_show_addresses_button.setText("Show My address");
+
         // Clear existing content in the VBox
         vbox_scroll_pane_customer_homePage.getChildren().clear();
 
@@ -296,13 +302,25 @@ public class CustomerHomePage {
                             "file:src/main/resources/images/" + restaurant.getPhoto()
                     );
 
+                    // Apply the new styling
+                    restaurantCart.setStyle("-fx-background-color: #638C6D; " +  // Dark Green
+                            "-fx-border-color: #C84C05; " +  // Deep Orange
+                            "-fx-border-width: 3; " +
+                            "-fx-border-radius: 15; " +
+                            "-fx-background-radius: 15; " +
+                            "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0.4, 0, 6);");
+
                     // Add hover effects
                     restaurantCart.setOnMouseEntered(event -> {
-                        restaurantCart.setStyle("-fx-background-color: #e0e0e0; -fx-border-color: #ccc; -fx-border-radius: 8px;");
+                        restaurantCart.setStyle("-fx-background-color: #E7FBB4; " + // Light Green on hover
+                                "-fx-border-color: #C84C05; " +
+                                "-fx-border-radius: 15px;");
                     });
 
                     restaurantCart.setOnMouseExited(event -> {
-                        restaurantCart.setStyle("-fx-background-color: #ffffff; -fx-border-color: #ccc; -fx-border-radius: 8px;");
+                        restaurantCart.setStyle("-fx-background-color: #638C6D; " + // Dark Green default
+                                "-fx-border-color: #C84C05; " +
+                                "-fx-border-radius: 15px;");
                     });
 
                     // Add click event to load selected restaurant's detailed page
@@ -320,6 +338,7 @@ public class CustomerHomePage {
             }
         }
     }
+
 
     /**
      * Loads the selected restaurant's page or detailed view.
@@ -352,61 +371,6 @@ public class CustomerHomePage {
         }
     }
 
-//    public void loadCustomerOrders() {
-//        // Clear existing VBox orders
-//        vbox_customer_orders.getChildren().clear();
-//
-//        try {
-//            // Fetch the customer's order details from the database
-//            List<OrderDetail> customerOrderDetails = orderDAO.getUserOrderHistory(customerId);
-//
-//            if (customerOrderDetails.isEmpty()) {
-//                Label noOrdersLabel = new Label("No orders available.");
-//                noOrdersLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10;");
-//                vbox_customer_orders.getChildren().add(noOrdersLabel);
-//                return;
-//            }
-//
-//            // Group order details by OrderId
-//            Map<Integer, List<OrderDetail>> ordersGroupedByOrderId = customerOrderDetails.stream()
-//                    .collect(Collectors.groupingBy(OrderDetail::getOrderId));
-//
-//            // Display grouped orders in the VBox
-//            for (Map.Entry<Integer, List<OrderDetail>> entry : ordersGroupedByOrderId.entrySet()) {
-//                int orderId = entry.getKey();
-//                List<OrderDetail> orderDetails = entry.getValue();
-//
-//                VBox orderBox = new VBox();
-//                orderBox.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5px; -fx-background-color: #f9f9f9; -fx-spacing: 5;");
-//
-//                // Add order details (Order ID)
-//                Label orderLabel = new Label("Order ID: " + orderId);
-//                orderLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-//
-//                VBox detailsBox = new VBox();
-//                detailsBox.setStyle("-fx-spacing: 5; -fx-padding: 5;");
-//
-//                for (OrderDetail detail : orderDetails) {
-//                    Label detailLabel = new Label(
-//                            "Item ID: " + detail.getItemId() +
-//                                    ", Quantity: " + detail.getCount() +
-//                                    ", Price: $" + detail.getPrice() +
-//                                    ", Total: $" + detail.calculateTotal()
-//                    );
-//                    detailLabel.setStyle("-fx-font-size: 14px;");
-//                    detailsBox.getChildren().add(detailLabel);
-//                }
-//
-//                orderBox.getChildren().addAll(orderLabel, detailsBox);
-//                vbox_customer_orders.getChildren().add(orderBox);
-//            }
-//        } catch (Exception e) {
-//            Label errorLabel = new Label("Failed to load orders. Please try again.");
-//            errorLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10; -fx-text-fill: red;");
-//            vbox_customer_orders.getChildren().add(errorLabel);
-//            e.printStackTrace();
-//        }
-//    }
     public void loadCustomerOrders() {
     // Clear existing VBox orders
         vbox_customer_orders.getChildren().clear();
@@ -559,5 +523,22 @@ public class CustomerHomePage {
         }
     }
 
+    @FXML
+    private void handleBackToLogin() {
+        try {
+            // Load the Login.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+            AnchorPane loginPage = loader.load();
+
+            // Set the Login scene
+            Stage stage = (Stage) customer_backtologin_button.getScene().getWindow();
+            stage.setScene(new Scene(loginPage));
+            stage.setTitle("Login Page");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Navigation Error", "An error occurred while navigating back to the login page.");
+        }
+    }
 
 }

@@ -11,10 +11,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -464,13 +466,25 @@ public class AdminHomePage {
                             "file:src/main/resources/images/" + restaurant.getPhoto()
                     );
 
+                    // Apply the new color scheme
+                    restaurantCart.setStyle("-fx-background-color: #638C6D; " +  // Dark Green
+                            "-fx-border-color: #C84C05; " +  // Deep Orange
+                            "-fx-border-width: 3; " +
+                            "-fx-border-radius: 15; " +
+                            "-fx-background-radius: 15; " +
+                            "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0.4, 0, 6);");
+
                     // Add hover effects
                     restaurantCart.setOnMouseEntered(event -> {
-                        restaurantCart.setStyle("-fx-background-color: #e0e0e0; -fx-border-color: #ccc; -fx-border-radius: 8px;");
+                        restaurantCart.setStyle("-fx-background-color: #E7FBB4; " + // Light Green on hover
+                                "-fx-border-color: #C84C05; " +
+                                "-fx-border-radius: 15px;");
                     });
 
                     restaurantCart.setOnMouseExited(event -> {
-                        restaurantCart.setStyle("-fx-background-color: #ffffff; -fx-border-color: #ccc; -fx-border-radius: 8px;");
+                        restaurantCart.setStyle("-fx-background-color: #638C6D; " + // Dark Green default
+                                "-fx-border-color: #C84C05; " +
+                                "-fx-border-radius: 15px;");
                     });
 
                     // Add click event to load selected restaurant's detailed page
@@ -1057,6 +1071,24 @@ public class AdminHomePage {
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Error", "An error occurred while reordering.");
+        }
+    }
+
+    @FXML
+    private void handleBackToLogin() {
+        try {
+            // Load the Login.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+            AnchorPane loginPage = loader.load();
+
+            // Set the Login scene
+            Stage stage = (Stage) admin_name.getScene().getWindow();
+            stage.setScene(new Scene(loginPage));
+            stage.setTitle("Login Page");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Navigation Error", "An error occurred while navigating back to the login page.");
         }
     }
 

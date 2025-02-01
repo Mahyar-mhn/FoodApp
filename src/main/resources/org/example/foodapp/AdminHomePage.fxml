@@ -13,50 +13,51 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.AdminHomePage">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@CssFiles/GlobalCss.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.foodapp.AdminHomePage">
    <children>
       <AnchorPane fx:id="main_pane_adminPage" layoutX="350.0" layoutY="200.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Separator layoutX="206.0" layoutY="200.0" orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="10.0" />
-            <AnchorPane fx:id="profile_pane_admin" layoutX="22.0" layoutY="200.0" prefHeight="600.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="652.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="profile_pane_admin" layoutX="22.0" layoutY="200.0" prefHeight="600.0" prefWidth="250.0" style="-fx-background-color: #E7EAEF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="652.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label alignment="CENTER" layoutX="67.0" layoutY="26.0" text="WELCOME" textAlignment="CENTER" AnchorPane.leftAnchor="66.66666666666664" AnchorPane.rightAnchor="68.33333333333333" AnchorPane.topAnchor="26.0">
+                  <Label alignment="CENTER" layoutX="67.0" layoutY="26.0" styleClass="label-primary" text="WELCOME" textAlignment="CENTER" AnchorPane.leftAnchor="66.66666666666664" AnchorPane.rightAnchor="68.33333333333333" AnchorPane.topAnchor="26.0">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="admin_name" layoutX="72.0" layoutY="72.0" text="admin name" textAlignment="CENTER" AnchorPane.topAnchor="72.0">
+                  <Label fx:id="admin_name" layoutX="72.0" layoutY="72.0" styleClass="label-primary" text="admin name" textAlignment="CENTER" AnchorPane.topAnchor="72.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                   <Separator layoutX="26.0" layoutY="126.0" prefWidth="200.0" AnchorPane.topAnchor="126.0" />
-                  <Button fx:id="manage_restaurant_button" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="311.0" mnemonicParsing="false" onAction="#toggleManageRestaurants" prefHeight="30.0" prefWidth="150.0" text="Manage Resturants" textAlignment="CENTER" />
-                  <Button fx:id="manage_user_button" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="256.0" mnemonicParsing="false" onAction="#toggleManageUsers" prefHeight="30.0" prefWidth="150.0" text="Manage Users" textAlignment="CENTER" textOverrun="CENTER_WORD_ELLIPSIS" />
-                  <Button fx:id="admin_show_addresses_button" layoutX="51.0" layoutY="368.0" mnemonicParsing="false" onAction="#toggleShowAddressesButton" prefHeight="30.0" prefWidth="150.0" text="show My addresses" />
+                  <Button fx:id="manage_restaurant_button" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="311.0" mnemonicParsing="false" onAction="#toggleManageRestaurants" prefHeight="30.0" prefWidth="150.0" styleClass="button-primary" stylesheets="@CssFiles/GlobalCss.css" text="Manage Resturants" textAlignment="CENTER" />
+                  <Button fx:id="manage_user_button" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="256.0" mnemonicParsing="false" onAction="#toggleManageUsers" prefHeight="30.0" prefWidth="150.0" styleClass="button-primary" stylesheets="@CssFiles/GlobalCss.css" text="Manage Users" textAlignment="CENTER" textOverrun="CENTER_WORD_ELLIPSIS" />
+                  <Button fx:id="admin_show_addresses_button" layoutX="51.0" layoutY="368.0" mnemonicParsing="false" onAction="#toggleShowAddressesButton" prefHeight="30.0" prefWidth="150.0" styleClass="button-primary" stylesheets="@CssFiles/GlobalCss.css" text="show My addresses" />
+                  <Button fx:id="back_to_login_button" layoutX="76.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleBackToLogin" styleClass="button-primary" stylesheets="@CssFiles/GlobalCss.css" text="Back To Login" AnchorPane.bottomAnchor="30.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="ordering_pane_admin" layoutX="250.0" layoutY="193.0" prefHeight="600.0" prefWidth="650.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label layoutX="27.0" layoutY="21.0" text="What would you eat today?!" AnchorPane.bottomAnchor="543.3333333333333" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+                  <Label layoutX="27.0" layoutY="21.0" styleClass="label-primary" text="What would you eat today?!" AnchorPane.bottomAnchor="543.3333333333333" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ScrollPane layoutX="239.0" layoutY="85.0" prefHeight="188.0" prefWidth="589.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="85.0">
+                  <ScrollPane layoutX="239.0" layoutY="85.0" prefHeight="188.0" styleClass="scroll-pane-fresh" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="85.0">
                     <content>
-                      <AnchorPane fx:id="scroll_pane_admin_homePage" minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="555.0">
+                      <AnchorPane fx:id="scroll_pane_admin_homePage" minHeight="0.0" minWidth="0.0" prefHeight="500.0">
                            <children>
-                              <VBox fx:id="vbox_scroll_pane_admin_homePage" layoutX="228.0" layoutY="150.0" prefHeight="500.0" prefWidth="291.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <VBox fx:id="vbox_scroll_pane_admin_homePage" layoutX="228.0" layoutY="150.0" prefHeight="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
                   </ScrollPane>
-                  <ScrollPane layoutX="40.0" layoutY="345.0" prefHeight="200.0" prefWidth="200.0">
+                  <ScrollPane layoutX="40.0" layoutY="345.0" prefHeight="200.0" styleClass="scroll-pane-fresh">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="351.0" prefWidth="200.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <VBox fx:id="vbox_admin_orders" layoutX="37.0" layoutY="-14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <VBox fx:id="vbox_admin_orders" layoutX="37.0" layoutY="-14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -72,21 +73,21 @@
                                  <content>
                                      <AnchorPane>
                                          <children>
-                                             <ScrollPane prefHeight="200.0" prefWidth="570.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="85.0">
+                                             <ScrollPane prefWidth="250.0" styleClass="scroll-pane-fresh" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="85.0">
                                                  <content>
-                                                     <AnchorPane fx:id="remove_restaurant_scroll_pane" prefHeight="347.0" prefWidth="562.0">
+                                                     <AnchorPane fx:id="remove_restaurant_scroll_pane">
                                                          <children>
-                                                             <VBox fx:id="remove_restaurant_vbox" prefHeight="413.0" prefWidth="618.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                             <VBox fx:id="remove_restaurant_vbox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                      </AnchorPane>
                                                  </content>
                                              </ScrollPane>
-                                             <Label layoutX="40.0" layoutY="40.0" text="List of All Restaurants:" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+                                             <Label layoutX="40.0" layoutY="40.0" styleClass="label-primary" text="List of All Restaurants:" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
                                                  <font>
                                                      <Font size="24.0" />
                                                  </font>
                                              </Label>
-                                             <Button fx:id="remove_restaurant_button" layoutX="239.0" layoutY="316.0" mnemonicParsing="false" text="Delete the Selected Record" />
+                                             <Button fx:id="remove_restaurant_button" layoutX="239.0" layoutY="316.0" mnemonicParsing="false" styleClass="button-primary" stylesheets="@CssFiles/GlobalCss.css" text="Delete the Selected Record" />
                                          </children>
                                      </AnchorPane>
                                  </content>
@@ -96,10 +97,10 @@
                                  <content>
                                      <AnchorPane>
                                          <children>
-                                             <TextField fx:id="add_restaurant_name_txtfield" layoutX="253.0" layoutY="172.0" promptText="Restaurant Name" />
-                                             <TextField fx:id="add_restaurant_city_txtfield" layoutX="251.0" layoutY="218.0" promptText="City" />
-                                             <TextField fx:id="add_restaurant_address_txtfield" layoutX="251.0" layoutY="263.0" promptText="Address" />
-                                             <Button fx:id="add_restaurant_button" layoutX="302.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleAddRestaurant" text="ADD" />
+                                             <TextField fx:id="add_restaurant_name_txtfield" layoutX="253.0" layoutY="172.0" promptText="Restaurant Name" styleClass="text-field-primary" />
+                                             <TextField fx:id="add_restaurant_city_txtfield" layoutX="251.0" layoutY="218.0" promptText="City" styleClass="text-field-primary" />
+                                             <TextField fx:id="add_restaurant_address_txtfield" layoutX="251.0" layoutY="263.0" promptText="Address" styleClass="text-field-primary" />
+                                             <Button fx:id="add_restaurant_button" layoutX="302.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleAddRestaurant" styleClass="button-primary" stylesheets="@CssFiles/GlobalCss.css" text="ADD" />
                                          </children>
                                      </AnchorPane>
                                  </content>
@@ -109,24 +110,24 @@
                                  <content>
                                      <AnchorPane>
                                          <children>
-                                             <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="85.0">
+                                             <ScrollPane prefWidth="250.0" styleClass="scroll-pane-fresh" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="85.0">
                                                  <content>
-                                                     <AnchorPane fx:id="edit_restaurant_scroll_pane" prefHeight="641.0" prefWidth="217.0">
+                                                     <AnchorPane fx:id="edit_restaurant_scroll_pane">
                                                          <children>
-                                                             <VBox fx:id="edit_restaurant_scroll_vbox" prefHeight="163.0" prefWidth="217.0" AnchorPane.bottomAnchor="478.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                             <VBox fx:id="edit_restaurant_scroll_vbox" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                      </AnchorPane>
                                                  </content>
                                              </ScrollPane>
-                                             <Label layoutX="63.0" layoutY="33.0" text="Edit Restaurant:" AnchorPane.topAnchor="33.0">
+                                             <Label layoutX="63.0" layoutY="33.0" styleClass="label-primary" text="Edit Restaurant:" AnchorPane.topAnchor="33.0">
                                                  <font>
                                                      <Font size="24.0" />
                                                  </font>
                                              </Label>
-                                             <TextField fx:id="edit_restaurant_name_txtfield" layoutX="400.0" layoutY="212.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="212.0" />
-                                             <TextField fx:id="edit_restaurant_city_txtfield" layoutX="400.0" layoutY="276.0" prefHeight="25.0" prefWidth="157.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" />
-                                             <TextField fx:id="edit_restaurant_address_txtfield" layoutX="400.0" layoutY="340.0" prefHeight="25.0" prefWidth="157.0" />
-                                             <Button fx:id="edit_restaurant_submission_button" layoutX="453.0" layoutY="428.0" mnemonicParsing="false" onAction="#updateRestaurantDetails" text="EDIT" />
+                                             <TextField fx:id="edit_restaurant_name_txtfield" layoutX="400.0" layoutY="212.0" styleClass="text-field-primary" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="212.0" />
+                                             <TextField fx:id="edit_restaurant_city_txtfield" layoutX="400.0" layoutY="276.0" prefHeight="25.0" prefWidth="157.0" styleClass="text-field-primary" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" />
+                                             <TextField fx:id="edit_restaurant_address_txtfield" layoutX="400.0" layoutY="340.0" prefHeight="25.0" prefWidth="157.0" styleClass="text-field-primary" />
+                                             <Button fx:id="edit_restaurant_submission_button" layoutX="453.0" layoutY="428.0" mnemonicParsing="false" onAction="#updateRestaurantDetails" styleClass="button-primary" stylesheets="@CssFiles/GlobalCss.css" text="EDIT" />
                                          </children>
                                      </AnchorPane>
                                  </content>
@@ -143,21 +144,21 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <Label layoutX="49.0" layoutY="57.0" text="Lsit of All users:)" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+                                    <Label layoutX="49.0" layoutY="57.0" styleClass="label-primary" text="Lsit of All users:)" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <ScrollPane layoutX="225.0" layoutY="119.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="85.0">
+                                    <ScrollPane layoutX="225.0" layoutY="119.0" prefHeight="200.0" prefWidth="200.0" styleClass="scroll-pane-fresh" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="85.0">
                                       <content>
-                                        <AnchorPane fx:id="remove_user_scrolpane" minHeight="0.0" minWidth="0.0" prefHeight="413.0" prefWidth="618.0">
+                                        <AnchorPane fx:id="remove_user_scrolpane" minHeight="0.0" minWidth="0.0">
                                              <children>
-                                                <VBox fx:id="remove_user_vbox" layoutX="174.0" layoutY="14.0" prefHeight="413.3333333333333" prefWidth="618.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <VBox fx:id="remove_user_vbox" layoutX="174.0" layoutY="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                       </content>
                                     </ScrollPane>
-                                    <Button fx:id="remove_user_button" layoutX="246.0" layoutY="318.0" mnemonicParsing="false" text="Delete the selected User" AnchorPane.bottomAnchor="200.0" />
+                                    <Button fx:id="remove_user_button" layoutX="246.0" layoutY="318.0" mnemonicParsing="false" styleClass="button-primary" text="Delete the selected User" AnchorPane.bottomAnchor="200.0" />
                                  </children>
                               </AnchorPane>
                         </content>
@@ -166,11 +167,11 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <ChoiceBox fx:id="add_user_role_choicebox" layoutX="250.0" layoutY="308.0" prefWidth="150.0" />
-                                    <TextField fx:id="add_user_password_txtfield" layoutX="251.0" layoutY="263.0" promptText="pass" />
-                                    <TextField fx:id="add_user_phone_txtfield" layoutX="251.0" layoutY="218.0" promptText="phone" />
-                                    <TextField fx:id="add_user_name_txtfield" layoutX="253.0" layoutY="172.0" promptText="name" />
-                                    <Button fx:id="add_user_button" layoutX="302.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleAddUser" text="ADD" />
+                                    <ChoiceBox fx:id="add_user_role_choicebox" layoutX="250.0" layoutY="308.0" prefWidth="150.0" styleClass="text-field-primary" />
+                                    <TextField fx:id="add_user_password_txtfield" layoutX="251.0" layoutY="263.0" promptText="pass" styleClass="text-field-primary" />
+                                    <TextField fx:id="add_user_phone_txtfield" layoutX="251.0" layoutY="218.0" promptText="phone" styleClass="text-field-primary" />
+                                    <TextField fx:id="add_user_name_txtfield" layoutX="253.0" layoutY="172.0" promptText="name" styleClass="text-field-primary" />
+                                    <Button fx:id="add_user_button" layoutX="302.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleAddUser" styleClass="button-primary" text="ADD" />
                                  </children>
                               </AnchorPane>
                         </content>
@@ -179,11 +180,11 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <ScrollPane layoutX="70.0" layoutY="176.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="85.0">
+                                    <ScrollPane layoutX="70.0" layoutY="176.0" prefHeight="200.0" prefWidth="200.0" styleClass="scroll-pane-fresh" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="85.0">
                                       <content>
-                                        <AnchorPane fx:id="edit_user_scroll_pane" minHeight="0.0" minWidth="0.0" prefHeight="641.0" prefWidth="217.0">
+                                        <AnchorPane fx:id="edit_user_scroll_pane" minHeight="0.0" minWidth="0.0">
                                              <children>
-                                                <VBox fx:id="edit_user_scroll_vbox" layoutX="59.0" layoutY="107.0" prefHeight="163.0" prefWidth="217.0" AnchorPane.bottomAnchor="478.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <VBox fx:id="edit_user_scroll_vbox" layoutX="59.0" layoutY="107.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                       </content>
@@ -193,10 +194,10 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="edit_user_name_txtfield" layoutX="400.0" layoutY="212.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="212.0" />
-                                    <TextField fx:id="edit_user_phone_txtfield" layoutX="400.0" layoutY="276.0" prefHeight="25.0" prefWidth="157.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" />
-                                    <Button fx:id="edit_submitionn_button" layoutX="453.0" layoutY="428.0" mnemonicParsing="false" onAction="#updateUserDetails" text="EDIT" />
-                                    <ChoiceBox fx:id="edit_user_role_choicebox" layoutX="405.0" layoutY="341.0" prefWidth="150.0" />
+                                    <TextField fx:id="edit_user_name_txtfield" layoutX="400.0" layoutY="212.0" styleClass="text-field-primary" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="212.0" />
+                                    <TextField fx:id="edit_user_phone_txtfield" layoutX="400.0" layoutY="276.0" prefHeight="25.0" prefWidth="157.0" styleClass="text-field-primary" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="90.0" />
+                                    <Button fx:id="edit_submitionn_button" layoutX="453.0" layoutY="428.0" mnemonicParsing="false" onAction="#updateUserDetails" styleClass="button-primary" text="EDIT" />
+                                    <ChoiceBox fx:id="edit_user_role_choicebox" layoutX="405.0" layoutY="341.0" prefWidth="150.0" styleClass="text-field-primary" />
                                  </children>
                               </AnchorPane>
                           </content>
@@ -207,19 +208,19 @@
             </AnchorPane>
             <AnchorPane fx:id="showAddressesPane" layoutX="475.0" layoutY="204.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <ScrollPane layoutX="225.0" layoutY="195.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.topAnchor="80.0">
+                  <ScrollPane layoutX="49.0" layoutY="50.0" prefHeight="200.0" styleClass="scroll-pane-fresh" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="731.0" prefWidth="200.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <VBox fx:id="vbox_admin_addresses" layoutX="42.0" layoutY="8.0" prefHeight="731.3333333333334" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <VBox fx:id="vbox_admin_addresses" layoutX="42.0" layoutY="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
                   </ScrollPane>
-                  <TextField fx:id="city_txtfield_newAddress" layoutX="470.0" layoutY="96.0" />
-                  <TextArea fx:id="detail_txtArea_newAddress" layoutX="436.0" layoutY="197.0" prefHeight="200.0" prefWidth="200.0" />
-                  <TextField fx:id="coordinate_txtfielad_newAddress" layoutX="487.0" layoutY="444.0" />
-                  <Button layoutX="502.0" layoutY="529.0" mnemonicParsing="false" onAction="#handleAddAdminAddress" text="ADD" />
+                  <TextField fx:id="city_txtfield_newAddress" layoutX="440.0" layoutY="104.0" styleClass="text-field-primary" />
+                  <TextArea fx:id="detail_txtArea_newAddress" layoutX="436.0" layoutY="226.0" prefHeight="124.0" prefWidth="200.0" styleClass="text-field-primary" />
+                  <TextField fx:id="coordinate_txtfielad_newAddress" layoutX="440.0" layoutY="159.0" styleClass="text-field-primary" />
+                  <Button layoutX="508.0" layoutY="393.0" mnemonicParsing="false" onAction="#handleAddAdminAddress" styleClass="button-primary" stylesheets="@CssFiles/GlobalCss.css" text="ADD" />
                </children>
             </AnchorPane>
          </children>

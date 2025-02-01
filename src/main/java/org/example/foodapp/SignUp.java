@@ -3,11 +3,16 @@ package org.example.foodapp;
 import Classes.User;
 import DaoClasses.UserDAO;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class SignUp {
 
@@ -90,5 +95,22 @@ public class SignUp {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    @FXML
+    private void handleBackToLogin() {
+        try {
+            // Load the Login.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+            AnchorPane loginPage = loader.load();
+
+            // Set the Login scene
+            Stage stage = (Stage) signup_button.getScene().getWindow();
+            stage.setScene(new Scene(loginPage));
+            stage.setTitle("Login Page");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Navigation Error", "An error occurred while navigating back to the login page.");
+        }
     }
 }

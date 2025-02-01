@@ -1,0 +1,79 @@
+/* style.css */
+
+/* AnchorPane Styling */
+.anchor-pane {
+    -fx-background-color: linear-gradient(to bottom, #E7FBB4, #638C6D);
+    -fx-padding: 20px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 5);
+}
+
+/* Label Styling */
+.label-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #C84C05;
+    -fx-padding: 10px;
+}
+
+.label-default {
+    -fx-font-size: 14px;
+    -fx-text-fill: #DF6D2D;
+}
+
+/* TextField Styling */
+.text-field {
+    -fx-border-color: #C84C05;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 5px;
+}
+
+/* Button Styling */
+.button {
+    -fx-background-color: #C84C05;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0.3, 0, 3);
+}
+
+.button:hover {
+    -fx-background-color: #DF6D2D;
+}
+
+.button-default {
+    -fx-background-color: #638C6D;
+    -fx-text-fill: white;
+}
+
+.button-danger {
+    -fx-background-color: #C84C05;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #E7FBB4;
+}
+
+/* VBox Styling */
+.vbox {
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #C84C05;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+/* ScrollPane Styling */
+.scroll-pane {
+    -fx-background: transparent;
+    -fx-padding: 10px;
+    -fx-border-color: #638C6D;
+    -fx-border-radius: 8px;
+}
